@@ -25,8 +25,10 @@ architecture, design tokens, and a build task list produced via the design-flow 
 
 ## Aesthetic
 
-**"Technical Ledger"** — Swiss-modernist, hairline borders doing the layout work,
-monospaced numerics, near-monochrome with a sharp accent. Ordered density, not clutter.
+**"Terminal Ledger"** — a CLI/terminal personality fused with Aino's Swiss hairline grid.
+Dark-first with a light mode and switchable accent tones; dotted/dashed CLI-style separators;
+monospace for all data + a clean sans for prose; deliberately minimal (not bold). ASCII shows
+up only as tiny dopamine micro-moments on state changes. Ordered density, not clutter.
 
 ## Tech (planned)
 

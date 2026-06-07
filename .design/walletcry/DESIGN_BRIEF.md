@@ -41,35 +41,48 @@ in plain numbers. Nothing nags, nothing clutters; progress is the reward.
 
 ## Aesthetic Direction
 
-- **Philosophy**: **"Technical Ledger"** — Swiss-modernist / engineered. Finance data is
-  treated as precise, tabular, and honest. The interface looks like a beautifully drafted
-  technical document: a visible structural grid, **hairline borders and dividers** doing
-  the layout work (not shadows or fills), **monospaced type for all numbers and labels**,
-  generous whitespace framing dense data, and restrained near-monochrome color with one
-  or two sharp accents. Borders and lines are the signature — they organize, separate, and
-  make density legible. Tables, statements, and amortization schedules become a *feature*,
-  not an eyesore.
-- **Tone**: Composed, exact, quietly confident. Reads as *engineered* — between "calm"
-  (spacious, unhurried) and "premium" (refined, high-contrast), but never soft/rounded/
-  cutesy and never cold/intimidating. Trustworthy like graph paper.
-- **Reference points**: Aino Agency (the user's reference — hairline grids, mono labels,
-  ASCII/technical motifs, editorial structure); Linear (calm precision, restraint);
-  technical drawings / engineering ledgers / financial statements as visual language;
-  a touch of Teenage Engineering's labeled, instrument-like clarity.
+- **Philosophy**: **"Terminal Ledger"** — a CLI/terminal personality fused with Aino's Swiss
+  hairline grid. Finance data is treated as precise, tabular, and honest, presented like a
+  beautifully drafted command-line readout. Signatures: a visible structural grid where
+  **borders and dividers do the layout work** (not shadows or fills) — and those separators
+  are often **dotted/dashed CLI-style rules** (`·····` / `- - - -`) rather than solid lines;
+  **monospaced type for all data — numbers, labels, table headers, nav, the command bar** —
+  paired with a clean grotesque **sans for prose/descriptions** so longer reading stays
+  effortless; generous whitespace framing dense data; restrained near-monochrome with one
+  sharp accent. Tables, statements, and amortization schedules become a *feature*, not an
+  eyesore — they read like clean terminal output.
+- **Theme & tone**: **Dark-first** (near-black, like the SwiftFunds reference) is the default;
+  a **light mode** (the Aino-style ink-on-paper dashboard) is a first-class peer; and the user
+  can **switch accent "tones."** So the token system must be fully themeable from day one
+  (multiple palettes via CSS variables), not a single hardcoded scheme. Tone is **minimal,
+  quiet, and exact — deliberately NOT bold/oversized** (disregard the 247PLUS giant-type
+  energy). Composed and instrument-like; never soft/cutesy, never cold/intimidating.
+- **Motion & ASCII (the dopamine layer)**: ASCII is **not** big decorative art — it lives in
+  **small micro-moments**: marking something done, moving/reordering an item, loading & empty
+  states, a wishlist item crossing into "affordable," and ASCII-flavored transitions (numbers
+  ticking, dotted lines drawing, tiny ASCII↔HD morphs). These are minimal visual rewards that
+  "feed the brain dopamine" without adding clutter. Everything else stays calm and still.
+- **Reference points**: the user's three references — (1) the light Swiss dashboard (hairline
+  grid, mono `INVENTORY/PRICE/SALES` labels, black bar charts, sparklines, green deltas) =
+  light mode + data density; (2) SwiftFunds dark fintech = the dark default mood; (3) 247PLUS =
+  the *terminal/CLI text* personality (dense `ls`-style indexed columns, `+` expanders) — but
+  **NOT** its oversized bold type. Plus Aino Agency (hairline grids, mono labels, ASCII motifs),
+  Linear (calm restraint), and real cmd/linux terminals as the core metaphor.
 - **Anti-references**: Mint (cluttered, ad-heavy, overwhelming); typical bank apps (boxy,
   shadowed, generic blue); gamified neobanks that shout with confetti and vivid gradients;
-  anything with heavy drop-shadows, glassmorphism, or rounded pastel "cards floating in
-  space." Dopamine here is *structural and earned*, not loud.
+  glassmorphism, heavy drop-shadows, rounded pastel "cards floating in space"; and oversized
+  loud display type. Dopamine here is *structural and earned* (terminal micro-feedback), not loud.
 
 ## Existing Patterns
 
 Empty repository — greenfield. No tokens, components, or conventions to honor yet.
 This brief and the tokens phase establish the vocabulary from scratch.
 
-- Typography: _none yet_ → plan: a clean grotesque sans for UI text + a monospace for all
-  numerics/labels (the Technical Ledger signature).
-- Colors: _none yet_ → plan: near-monochrome ink-on-paper, light + dark, one sharp accent
-  + semantic up/down (income/expense) colors.
+- Typography: _none yet_ → plan: a monospace for ALL data (numbers, labels, table headers,
+  nav, command bar) + a clean grotesque sans for prose/descriptions (the Terminal Ledger split).
+- Colors: _none yet_ → plan: **dark-first** near-black default + light ink-on-paper peer, a
+  **themeable accent-tone system** (CSS variables, user-switchable), and semantic up/down
+  (income/expense) colors that never rely on hue alone.
 - Spacing: _none yet_ → plan: strict modular grid scale.
 - Components: _none yet_ → see inventory below; all New.
 
@@ -110,8 +123,10 @@ This brief and the tokens phase establish the vocabulary from scratch.
   cash* vs *finance now* (monthly payment, total interest, and how it delays other goals).
 - **Debt payoff**: Adjusting an extra-payment slider animates the payoff date and total-
   interest figures in real time — the honest, calm dopamine of watching the date move closer.
-- **Feedback character**: State changes use quick, precise motion (lines drawing, numbers
-  ticking, bars filling) — instrument-like, never bouncy/confetti.
+- **Feedback character**: State changes use quick, precise motion plus tiny **ASCII micro-
+  moments** — marking done, reordering, loading/empty states, an item crossing into
+  "affordable" (dotted lines drawing, numbers ticking, small ASCII↔HD morphs). Instrument-
+  like and rewarding, never bouncy/confetti. Respects `prefers-reduced-motion`.
 
 ## Responsive Behavior
 
