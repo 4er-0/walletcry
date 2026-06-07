@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { AppShell } from '@/components/shell/AppShell'
 import { PlaceholderScreen } from '@/components/PlaceholderScreen'
 import { HomePage } from '@/routes/HomePage'
+import { KitPage } from '@/routes/KitPage'
 
 /**
  * Route skeleton mirroring INFORMATION_ARCHITECTURE.md. Screens that aren't
@@ -24,6 +25,7 @@ export const router = createBrowserRouter([
       { path: 'settings', element: <PlaceholderScreen name="SETTINGS" route="/settings" /> },
       { path: 'settings/:area', element: <PlaceholderScreen name="SETTINGS_AREA" route="/settings/:area" /> },
       { path: 'onboarding', element: <PlaceholderScreen name="ONBOARDING" route="/onboarding" /> },
+      { path: 'kit', element: <KitPage /> }, // dev: HUD component-kit gallery
       { path: 'share-target', element: <Navigate to="/wishlist/new" replace /> },
       { path: '*', element: <PlaceholderScreen name="404_NOT_FOUND" route="*" /> },
     ],
