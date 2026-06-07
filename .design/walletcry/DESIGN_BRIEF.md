@@ -41,35 +41,67 @@ in plain numbers. Nothing nags, nothing clutters; progress is the reward.
 
 ## Aesthetic Direction
 
-- **Philosophy**: **"Technical Ledger"** — Swiss-modernist / engineered. Finance data is
-  treated as precise, tabular, and honest. The interface looks like a beautifully drafted
-  technical document: a visible structural grid, **hairline borders and dividers** doing
-  the layout work (not shadows or fills), **monospaced type for all numbers and labels**,
-  generous whitespace framing dense data, and restrained near-monochrome color with one
-  or two sharp accents. Borders and lines are the signature — they organize, separate, and
-  make density legible. Tables, statements, and amortization schedules become a *feature*,
-  not an eyesore.
-- **Tone**: Composed, exact, quietly confident. Reads as *engineered* — between "calm"
-  (spacious, unhurried) and "premium" (refined, high-contrast), but never soft/rounded/
-  cutesy and never cold/intimidating. Trustworthy like graph paper.
-- **Reference points**: Aino Agency (the user's reference — hairline grids, mono labels,
-  ASCII/technical motifs, editorial structure); Linear (calm precision, restraint);
-  technical drawings / engineering ledgers / financial statements as visual language;
-  a touch of Teenage Engineering's labeled, instrument-like clarity.
+- **Philosophy**: **"Terminal Ledger / Tactical HUD"** — a CLI/terminal + command-center
+  personality fused with Aino's Swiss hairline grid. Finance data is presented like a precise,
+  honest command-line / mission-control readout. Concrete signature primitives (from the user's
+  HUD references):
+  - **Bracketed corner frames** (`⌐ ¬ L ⌐`) around panels — the HUD container look.
+  - **Dashed / dotted borders & rules** (`·····` / `- - - -`) doing the layout work, not
+    shadows or fills.
+  - **Monospace for ALL data** — numbers, labels, table headers, nav, command bar — with a
+    clean grotesque **sans for prose/descriptions** so longer reading stays effortless.
+  - **Machine-readable label style**: `SIGNALS_OVER_TIME`, `LAST_14_DAYS`, `// 2 // 3`
+    (underscores joining words, `//` separators, indexed pagination).
+  - **Segmented / ticked gauges** (`▏▎▍▌▌▌`) instead of smooth progress bars.
+  - **Log-feed pattern**: `> [17:48:12] message…` lines — used for import/activity logs.
+  - **Thin HUD line charts**, sparklines, and the occasional **radar/spider chart**.
+  - **Dotted / pointillist ASCII imagery** for hero art, empty states, and the login screen
+    (cf. the ASCII Greek columns and dotted satellite map references).
+  - Tables, statements, and amortization schedules become a *feature* — they read like clean
+    terminal output.
+- **Color & theme**: **Mostly black & white.** Base is near-black bg with white/grey data and
+  dashed hairlines (light mode = ink-on-paper peer). **Color is semantic, not decorative**, and
+  used boldly: **bold neon green = profit / positive / on-track**, **bold red = debt / negative /
+  going-down**; everything else stays white/neutral. Do *not* pull the multi-color palettes from
+  the reference screenshots — keep it monochrome + green/red, with at most **one optional
+  user-switchable accent tone** (e.g. phosphor green or amber). The token system must therefore
+  be **themeable from day one** (CSS variables: dark/light × accent tone), not hardcoded.
+- **Tone register**: **Calm & monochrome by default; full-tactical only when warranted.** The HUD
+  shell (brackets, gauges, logs, dashed frames) is always present, but it stays quiet day-to-day.
+  Genuine warnings — overdraft, missed/late debt payment, big overspend — earn the dramatic
+  treatment: bold red, urgent/animated, "alert" energy. Drama is reserved for moments that
+  deserve it, so it still means something. Typography stays **restrained, not oversized** (no
+  giant 247PLUS wordmarks) — *but* the hero financial figures carry **weight + semantic color**.
+- **Motion & ASCII (the dopamine layer)**: ASCII is **not** big decorative art in the chrome —
+  it lives in **small micro-moments**: marking something done, moving/reordering an item,
+  **loading screens & empty states** (dotted/pointillist ASCII animations/spinners), a wishlist
+  item crossing into "affordable," and ASCII-flavored transitions (numbers ticking, dotted lines
+  drawing, tiny ASCII↔HD morphs). Minimal visual rewards that "feed the brain dopamine" without
+  clutter. Everything else stays calm and still. Respects `prefers-reduced-motion`.
+- **Reference points**: the user's HUD/terminal references — a tactical "control interface"
+  dashboard (bracketed panels, mission tables, `> [timestamp]` activity logs, segmented gauges);
+  a satellite-telemetry HUD (wireframe + leader-line labels, thin charts, phosphor green); a
+  dark login with **ASCII/pointillist column art**; a black-&-white cyber-security dashboard
+  (bracketed frames, `RECORDS 35.51m`, `//`-separated labels, radar chart). Plus Aino Agency
+  (hairline grids, mono labels, ASCII motifs), Linear (calm restraint), and real cmd/linux
+  terminals as the core metaphor.
 - **Anti-references**: Mint (cluttered, ad-heavy, overwhelming); typical bank apps (boxy,
-  shadowed, generic blue); gamified neobanks that shout with confetti and vivid gradients;
-  anything with heavy drop-shadows, glassmorphism, or rounded pastel "cards floating in
-  space." Dopamine here is *structural and earned*, not loud.
+  shadowed, generic blue); gamified neobanks with confetti and vivid multi-color gradients;
+  glassmorphism, heavy drop-shadows, rounded pastel "cards floating in space"; oversized loud
+  wordmarks; and pulling lots of decorative colors from the HUD refs. Dopamine here is
+  *structural and earned* (terminal micro-feedback), not loud.
 
 ## Existing Patterns
 
 Empty repository — greenfield. No tokens, components, or conventions to honor yet.
 This brief and the tokens phase establish the vocabulary from scratch.
 
-- Typography: _none yet_ → plan: a clean grotesque sans for UI text + a monospace for all
-  numerics/labels (the Technical Ledger signature).
-- Colors: _none yet_ → plan: near-monochrome ink-on-paper, light + dark, one sharp accent
-  + semantic up/down (income/expense) colors.
+- Typography: _none yet_ → plan: a monospace for ALL data (numbers, labels, table headers,
+  nav, command bar) + a clean grotesque sans for prose/descriptions (the Terminal Ledger split).
+- Colors: _none yet_ → plan: **mostly black & white** (near-black dark default + light ink-on-
+  paper peer), color used **semantically not decoratively** — bold neon green = profit/positive,
+  bold red = debt/negative, white/grey = neutral data; at most one optional switchable accent
+  tone. Themeable via CSS variables (dark/light × tone). Never rely on hue alone (sign + label too).
 - Spacing: _none yet_ → plan: strict modular grid scale.
 - Components: _none yet_ → see inventory below; all New.
 
@@ -110,8 +142,10 @@ This brief and the tokens phase establish the vocabulary from scratch.
   cash* vs *finance now* (monthly payment, total interest, and how it delays other goals).
 - **Debt payoff**: Adjusting an extra-payment slider animates the payoff date and total-
   interest figures in real time — the honest, calm dopamine of watching the date move closer.
-- **Feedback character**: State changes use quick, precise motion (lines drawing, numbers
-  ticking, bars filling) — instrument-like, never bouncy/confetti.
+- **Feedback character**: State changes use quick, precise motion plus tiny **ASCII micro-
+  moments** — marking done, reordering, loading/empty states, an item crossing into
+  "affordable" (dotted lines drawing, numbers ticking, small ASCII↔HD morphs). Instrument-
+  like and rewarding, never bouncy/confetti. Respects `prefers-reduced-motion`.
 
 ## Responsive Behavior
 
@@ -134,6 +168,24 @@ Truly responsive, 50/50 phone+desktop — no "mobile afterthought."
   for the semantic up/down palette.
 - Respect `prefers-reduced-motion` (the ticking/drawing animations have static fallbacks).
 - Screen-reader-correct tables (proper headers/scope) and labeled form fields in import/mapping.
+
+## Platform Support
+
+Target platforms: **Windows, macOS, Android, and iOS** — one installable PWA across all four.
+Known iOS/Safari PWA caveats to design around (they affect specific features):
+
+- **Install**: iOS has no `beforeinstallprompt` — installation is a manual "Add to Home Screen"
+  via the Share sheet. Provide a one-time, dismissible instructional nudge for iOS users;
+  Android/desktop use the native install prompt.
+- **Share-target**: the Web Share Target API (share a link straight into the wishlist) works on
+  Android + desktop but **not iOS Safari**. iOS fallback: paste-from-clipboard in the command
+  bar / quick-add sheet — same outcome, different entry point.
+- **Notifications**: web push works on iOS only for an *installed* PWA on **iOS 16.4+**. Reminder
+  features are gated/progressive-enhanced accordingly.
+- **Storage**: Safari may evict IndexedDB under storage pressure → request `navigator.storage.persist()`.
+- **Layout**: honor `env(safe-area-inset-*)` for the notch/home indicator; touch targets ≥44px.
+- The `Cmd/Ctrl-K` command palette is a desktop affordance (physical keyboard); on mobile the
+  same actions live behind the center "+". No feature is iOS-exclusive or iOS-excluded beyond the above.
 
 ## Out of Scope (this build)
 
