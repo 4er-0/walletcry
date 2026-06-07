@@ -169,6 +169,24 @@ Truly responsive, 50/50 phone+desktop — no "mobile afterthought."
 - Respect `prefers-reduced-motion` (the ticking/drawing animations have static fallbacks).
 - Screen-reader-correct tables (proper headers/scope) and labeled form fields in import/mapping.
 
+## Platform Support
+
+Target platforms: **Windows, macOS, Android, and iOS** — one installable PWA across all four.
+Known iOS/Safari PWA caveats to design around (they affect specific features):
+
+- **Install**: iOS has no `beforeinstallprompt` — installation is a manual "Add to Home Screen"
+  via the Share sheet. Provide a one-time, dismissible instructional nudge for iOS users;
+  Android/desktop use the native install prompt.
+- **Share-target**: the Web Share Target API (share a link straight into the wishlist) works on
+  Android + desktop but **not iOS Safari**. iOS fallback: paste-from-clipboard in the command
+  bar / quick-add sheet — same outcome, different entry point.
+- **Notifications**: web push works on iOS only for an *installed* PWA on **iOS 16.4+**. Reminder
+  features are gated/progressive-enhanced accordingly.
+- **Storage**: Safari may evict IndexedDB under storage pressure → request `navigator.storage.persist()`.
+- **Layout**: honor `env(safe-area-inset-*)` for the notch/home indicator; touch targets ≥44px.
+- The `Cmd/Ctrl-K` command palette is a desktop affordance (physical keyboard); on mobile the
+  same actions live behind the center "+". No feature is iOS-exclusive or iOS-excluded beyond the above.
+
 ## Out of Scope (this build)
 
 - **Live bank API / aggregator integration** — only *scaffolded* (entry points, data-layer
