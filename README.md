@@ -25,10 +25,13 @@ architecture, design tokens, and a build task list produced via the design-flow 
 
 ## Aesthetic
 
-**"Terminal Ledger"** — a CLI/terminal personality fused with Aino's Swiss hairline grid.
-Dark-first with a light mode and switchable accent tones; dotted/dashed CLI-style separators;
-monospace for all data + a clean sans for prose; deliberately minimal (not bold). ASCII shows
-up only as tiny dopamine micro-moments on state changes. Ordered density, not clutter.
+**"Terminal Ledger / Tactical HUD"** — a CLI/terminal + command-center personality fused with
+Aino's Swiss hairline grid. Bracketed corner frames, dashed/dotted borders, segmented gauges,
+`> [timestamp]` log feeds, and `//`/`_` machine-readable labels. Mostly **black & white**:
+color is semantic only — bold neon green = profit, bold red = debt/danger. Dark-first with a
+light mode and a switchable accent tone. Monospace for all data + clean sans for prose; calm by
+default, full-tactical only for genuine warnings. Dotted/pointillist ASCII for hero/empty/login
+art, plus tiny ASCII dopamine micro-moments on state changes. Ordered density, not clutter.
 
 ## Tech (planned)
 

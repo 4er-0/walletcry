@@ -41,37 +41,55 @@ in plain numbers. Nothing nags, nothing clutters; progress is the reward.
 
 ## Aesthetic Direction
 
-- **Philosophy**: **"Terminal Ledger"** — a CLI/terminal personality fused with Aino's Swiss
-  hairline grid. Finance data is treated as precise, tabular, and honest, presented like a
-  beautifully drafted command-line readout. Signatures: a visible structural grid where
-  **borders and dividers do the layout work** (not shadows or fills) — and those separators
-  are often **dotted/dashed CLI-style rules** (`·····` / `- - - -`) rather than solid lines;
-  **monospaced type for all data — numbers, labels, table headers, nav, the command bar** —
-  paired with a clean grotesque **sans for prose/descriptions** so longer reading stays
-  effortless; generous whitespace framing dense data; restrained near-monochrome with one
-  sharp accent. Tables, statements, and amortization schedules become a *feature*, not an
-  eyesore — they read like clean terminal output.
-- **Theme & tone**: **Dark-first** (near-black, like the SwiftFunds reference) is the default;
-  a **light mode** (the Aino-style ink-on-paper dashboard) is a first-class peer; and the user
-  can **switch accent "tones."** So the token system must be fully themeable from day one
-  (multiple palettes via CSS variables), not a single hardcoded scheme. Tone is **minimal,
-  quiet, and exact — deliberately NOT bold/oversized** (disregard the 247PLUS giant-type
-  energy). Composed and instrument-like; never soft/cutesy, never cold/intimidating.
-- **Motion & ASCII (the dopamine layer)**: ASCII is **not** big decorative art — it lives in
-  **small micro-moments**: marking something done, moving/reordering an item, loading & empty
-  states, a wishlist item crossing into "affordable," and ASCII-flavored transitions (numbers
-  ticking, dotted lines drawing, tiny ASCII↔HD morphs). These are minimal visual rewards that
-  "feed the brain dopamine" without adding clutter. Everything else stays calm and still.
-- **Reference points**: the user's three references — (1) the light Swiss dashboard (hairline
-  grid, mono `INVENTORY/PRICE/SALES` labels, black bar charts, sparklines, green deltas) =
-  light mode + data density; (2) SwiftFunds dark fintech = the dark default mood; (3) 247PLUS =
-  the *terminal/CLI text* personality (dense `ls`-style indexed columns, `+` expanders) — but
-  **NOT** its oversized bold type. Plus Aino Agency (hairline grids, mono labels, ASCII motifs),
-  Linear (calm restraint), and real cmd/linux terminals as the core metaphor.
+- **Philosophy**: **"Terminal Ledger / Tactical HUD"** — a CLI/terminal + command-center
+  personality fused with Aino's Swiss hairline grid. Finance data is presented like a precise,
+  honest command-line / mission-control readout. Concrete signature primitives (from the user's
+  HUD references):
+  - **Bracketed corner frames** (`⌐ ¬ L ⌐`) around panels — the HUD container look.
+  - **Dashed / dotted borders & rules** (`·····` / `- - - -`) doing the layout work, not
+    shadows or fills.
+  - **Monospace for ALL data** — numbers, labels, table headers, nav, command bar — with a
+    clean grotesque **sans for prose/descriptions** so longer reading stays effortless.
+  - **Machine-readable label style**: `SIGNALS_OVER_TIME`, `LAST_14_DAYS`, `// 2 // 3`
+    (underscores joining words, `//` separators, indexed pagination).
+  - **Segmented / ticked gauges** (`▏▎▍▌▌▌`) instead of smooth progress bars.
+  - **Log-feed pattern**: `> [17:48:12] message…` lines — used for import/activity logs.
+  - **Thin HUD line charts**, sparklines, and the occasional **radar/spider chart**.
+  - **Dotted / pointillist ASCII imagery** for hero art, empty states, and the login screen
+    (cf. the ASCII Greek columns and dotted satellite map references).
+  - Tables, statements, and amortization schedules become a *feature* — they read like clean
+    terminal output.
+- **Color & theme**: **Mostly black & white.** Base is near-black bg with white/grey data and
+  dashed hairlines (light mode = ink-on-paper peer). **Color is semantic, not decorative**, and
+  used boldly: **bold neon green = profit / positive / on-track**, **bold red = debt / negative /
+  going-down**; everything else stays white/neutral. Do *not* pull the multi-color palettes from
+  the reference screenshots — keep it monochrome + green/red, with at most **one optional
+  user-switchable accent tone** (e.g. phosphor green or amber). The token system must therefore
+  be **themeable from day one** (CSS variables: dark/light × accent tone), not hardcoded.
+- **Tone register**: **Calm & monochrome by default; full-tactical only when warranted.** The HUD
+  shell (brackets, gauges, logs, dashed frames) is always present, but it stays quiet day-to-day.
+  Genuine warnings — overdraft, missed/late debt payment, big overspend — earn the dramatic
+  treatment: bold red, urgent/animated, "alert" energy. Drama is reserved for moments that
+  deserve it, so it still means something. Typography stays **restrained, not oversized** (no
+  giant 247PLUS wordmarks) — *but* the hero financial figures carry **weight + semantic color**.
+- **Motion & ASCII (the dopamine layer)**: ASCII is **not** big decorative art in the chrome —
+  it lives in **small micro-moments**: marking something done, moving/reordering an item,
+  **loading screens & empty states** (dotted/pointillist ASCII animations/spinners), a wishlist
+  item crossing into "affordable," and ASCII-flavored transitions (numbers ticking, dotted lines
+  drawing, tiny ASCII↔HD morphs). Minimal visual rewards that "feed the brain dopamine" without
+  clutter. Everything else stays calm and still. Respects `prefers-reduced-motion`.
+- **Reference points**: the user's HUD/terminal references — a tactical "control interface"
+  dashboard (bracketed panels, mission tables, `> [timestamp]` activity logs, segmented gauges);
+  a satellite-telemetry HUD (wireframe + leader-line labels, thin charts, phosphor green); a
+  dark login with **ASCII/pointillist column art**; a black-&-white cyber-security dashboard
+  (bracketed frames, `RECORDS 35.51m`, `//`-separated labels, radar chart). Plus Aino Agency
+  (hairline grids, mono labels, ASCII motifs), Linear (calm restraint), and real cmd/linux
+  terminals as the core metaphor.
 - **Anti-references**: Mint (cluttered, ad-heavy, overwhelming); typical bank apps (boxy,
-  shadowed, generic blue); gamified neobanks that shout with confetti and vivid gradients;
-  glassmorphism, heavy drop-shadows, rounded pastel "cards floating in space"; and oversized
-  loud display type. Dopamine here is *structural and earned* (terminal micro-feedback), not loud.
+  shadowed, generic blue); gamified neobanks with confetti and vivid multi-color gradients;
+  glassmorphism, heavy drop-shadows, rounded pastel "cards floating in space"; oversized loud
+  wordmarks; and pulling lots of decorative colors from the HUD refs. Dopamine here is
+  *structural and earned* (terminal micro-feedback), not loud.
 
 ## Existing Patterns
 
@@ -80,9 +98,10 @@ This brief and the tokens phase establish the vocabulary from scratch.
 
 - Typography: _none yet_ → plan: a monospace for ALL data (numbers, labels, table headers,
   nav, command bar) + a clean grotesque sans for prose/descriptions (the Terminal Ledger split).
-- Colors: _none yet_ → plan: **dark-first** near-black default + light ink-on-paper peer, a
-  **themeable accent-tone system** (CSS variables, user-switchable), and semantic up/down
-  (income/expense) colors that never rely on hue alone.
+- Colors: _none yet_ → plan: **mostly black & white** (near-black dark default + light ink-on-
+  paper peer), color used **semantically not decoratively** — bold neon green = profit/positive,
+  bold red = debt/negative, white/grey = neutral data; at most one optional switchable accent
+  tone. Themeable via CSS variables (dark/light × tone). Never rely on hue alone (sign + label too).
 - Spacing: _none yet_ → plan: strict modular grid scale.
 - Components: _none yet_ → see inventory below; all New.
 
