@@ -2,10 +2,12 @@ import { useState } from 'react'
 
 import {
   Bar,
+  BarChart,
   CategoryChip,
   CategoryPicker,
   EmptyState,
   Gauge,
+  LineChart,
   LogFeed,
   Panel,
   Stat,
@@ -36,54 +38,50 @@ export function KitPage() {
       <div className="label mb-4">// HUD_COMPONENT_KIT — switch theme/tone in the top bar</div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        {/* Stat / number blocks */}
+        {/* Stat / number blocks — only the hero takes color; rest stay neutral */}
         <Panel label="STAT_BLOCKS">
           <div className="grid grid-cols-2 gap-5">
             <Stat
               label="LEFT_THIS_MONTH"
               value={formatMoney(3412.5, 'PLN', { decimals: 0 })}
-              sign="pos"
+              emphasis="hero"
               size="lg"
               delta="+12,4% vs prev"
             />
             <Stat
               label="TOTAL_OWED"
               value={formatMoney(-27590, 'PLN', { decimals: 0 })}
-              sign="neg"
               size="lg"
               delta="payoff 2027-08"
-              deltaSign="neutral"
             />
-            <Stat label="SPENT" value={formatMoney(4087.6)} sign="neutral" size="sm" />
-            <Stat label="INCOME" value={formatMoney(7500)} sign="pos" size="sm" />
+            <Stat label="SPENT" value={formatMoney(4087.6)} size="sm" />
+            <Stat
+              label="OVERSPEND_ALERT"
+              value={formatMoney(-612.4)}
+              emphasis="danger"
+              size="sm"
+              delta="budget exceeded"
+            />
           </div>
         </Panel>
 
-        {/* Segmented gauge */}
+        {/* Segmented gauge — monochrome, red only for genuine warnings */}
         <Panel label="SEGMENTED_GAUGE">
           <div className="flex flex-col gap-4">
-            <Gauge label="CASHFLOW // IN_VS_OUT" value={0.62} state="pos" caption="62% headroom" />
-            <Gauge label="BUDGET_USED" value={0.88} state="warn" caption="88% of budget" />
-            <Gauge label="OVERSPEND" value={1.12} max={1} state="neg" caption="OVER_BUDGET" />
+            <Gauge label="CASHFLOW // IN_VS_OUT" value={0.62} caption="62% headroom" />
+            <Gauge label="BUDGET_USED" value={0.88} caption="88% of budget" />
+            <Gauge label="OVERSPEND" value={1.12} max={1} state="danger" caption="OVER_BUDGET" />
           </div>
         </Panel>
 
-        {/* Progress / affordability bars */}
+        {/* Progress / affordability bars — all white */}
         <Panel label="AFFORDABILITY_BARS">
           <div className="flex flex-col gap-4">
-            <Bar
-              label="KEYCHRON_Q1_PRO"
-              value={890}
-              max={890}
-              state="pos"
-              showPercent
-              caption="affordable now"
-            />
+            <Bar label="KEYCHRON_Q1_PRO" value={890} max={890} showPercent caption="affordable now" />
             <Bar
               label="DELL_ULTRASHARP_4K"
               value={1400}
               max={3400}
-              state="accent"
               showPercent
               caption="affordable in 6 months"
             />
@@ -91,9 +89,24 @@ export function KitPage() {
               label="HERMAN_MILLER_AERON"
               value={900}
               max={6200}
-              state="neutral"
               showPercent
               caption="affordable in 16 months"
+            />
+          </div>
+        </Panel>
+
+        {/* Graphs — thin line/area + segmented bar/spectrum */}
+        <Panel label="GRAPHS">
+          <div className="flex flex-col gap-5">
+            <LineChart
+              label="BALANCE // LAST_30_DAYS"
+              data={[120, 180, 140, 220, 200, 280, 240, 360, 320, 300, 380, 420]}
+              caption="trend ↗"
+            />
+            <BarChart
+              label="SPEND_BY_DAY // LAST_14_DAYS"
+              data={[40, 12, 88, 30, 64, 120, 52, 76, 20, 96, 44, 60, 110, 28]}
+              caption="PLN per day"
             />
           </div>
         </Panel>

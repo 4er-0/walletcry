@@ -140,19 +140,19 @@
   --tone-accent-muted:  rgba(47, 227, 107, 0.14); /* subtle fills/highlights */
 
   /* ================================================================ LIGHT PALETTE (:root default) */
-  --color-bg-primary:    #F4F4F2;  /* paper */
+  --color-bg-primary:    #FFFFFF;  /* pure white paper — inverse of dark */
   --color-bg-secondary:  #FFFFFF;  /* panels */
-  --color-bg-tertiary:   #ECECEA;  /* inputs / wells */
-  --color-bg-inverse:    #0A0B0D;
+  --color-bg-tertiary:   #ECECEA;  /* inputs / wells / gauge tracks */
+  --color-bg-inverse:    #000000;
 
-  --color-text-primary:   #0E0F12;
-  --color-text-secondary: #565A61;
-  --color-text-tertiary:  #898E96; /* placeholder / disabled */
-  --color-text-inverse:   #F4F4F2;
+  --color-text-primary:   #000000;  /* full black — max contrast on white */
+  --color-text-secondary: #4A4E55;
+  --color-text-tertiary:  #80858D; /* placeholder / disabled */
+  --color-text-inverse:   #FFFFFF;
   --color-text-link:      var(--tone-accent-active);
 
-  --color-border-primary:   #C9CACE;
-  --color-border-secondary: #E2E2E0;
+  --color-border-primary:   #AFB1B7;  /* darker hairline for contrast */
+  --color-border-secondary: #DDDDDB;
   --color-border-focus:     var(--tone-accent-active);
 
   --color-accent-primary:        var(--tone-accent-active);
@@ -175,24 +175,30 @@
 
   --color-surface-overlay: rgba(10, 11, 13, 0.45);
 
+  /* Bars & gauges are MONOCHROME: ink fill on a muted track. Because the fill
+     is the primary text color, it auto-inverts (white on dark, black on light).
+     Color stays reserved for the hero figure (tone) and genuine warnings (red). */
+  --color-bar-fill:  var(--color-text-primary);
+  --color-bar-track: var(--color-bg-tertiary);
+
   color-scheme: light;
 }
 
 /* ================================================================== DARK PALETTE */
 [data-theme="dark"] {
-  --color-bg-primary:    #0A0B0D;  /* near-black, the default mood */
-  --color-bg-secondary:  #101216;  /* HUD panels */
-  --color-bg-tertiary:   #181B20;  /* inputs / wells / gauge tracks */
-  --color-bg-inverse:    #E8E9EC;
+  --color-bg-primary:    #000000;  /* pure black — maximum contrast */
+  --color-bg-secondary:  #08090B;  /* HUD panels — barely lifted from black */
+  --color-bg-tertiary:   #15171B;  /* inputs / wells / gauge tracks */
+  --color-bg-inverse:    #FFFFFF;
 
-  --color-text-primary:   #E8E9EC;  /* off-white, not harsh #fff */
-  --color-text-secondary: #9AA0A8;
-  --color-text-tertiary:  #5B616B;
-  --color-text-inverse:   #0A0B0D;
+  --color-text-primary:   #FFFFFF;  /* full white — data & figures pop */
+  --color-text-secondary: #BCC1C9;  /* brighter so mono labels never get lost */
+  --color-text-tertiary:  #71767F;
+  --color-text-inverse:   #000000;
   --color-text-link:      var(--tone-accent);
 
-  --color-border-primary:   #363A42;  /* visible hairline (≥3:1 vs bg) */
-  --color-border-secondary: #20242B;  /* subtle */
+  --color-border-primary:   #474C54;  /* brighter hairline for contrast */
+  --color-border-secondary: #23272E;  /* subtle */
   --color-border-focus:     var(--tone-accent);
 
   --color-accent-primary:        var(--tone-accent);
@@ -221,19 +227,19 @@
 /* System-preference dark, unless the user explicitly chose light */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --color-bg-primary:    #0A0B0D;
-    --color-bg-secondary:  #101216;
-    --color-bg-tertiary:   #181B20;
-    --color-bg-inverse:    #E8E9EC;
+    --color-bg-primary:    #000000;
+    --color-bg-secondary:  #08090B;
+    --color-bg-tertiary:   #15171B;
+    --color-bg-inverse:    #FFFFFF;
 
-    --color-text-primary:   #E8E9EC;
-    --color-text-secondary: #9AA0A8;
-    --color-text-tertiary:  #5B616B;
-    --color-text-inverse:   #0A0B0D;
+    --color-text-primary:   #FFFFFF;
+    --color-text-secondary: #BCC1C9;
+    --color-text-tertiary:  #71767F;
+    --color-text-inverse:   #000000;
     --color-text-link:      var(--tone-accent);
 
-    --color-border-primary:   #363A42;
-    --color-border-secondary: #20242B;
+    --color-border-primary:   #474C54;
+    --color-border-secondary: #23272E;
     --color-border-focus:     var(--tone-accent);
 
     --color-accent-primary:        var(--tone-accent);

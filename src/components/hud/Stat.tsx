@@ -1,6 +1,4 @@
-import { cn } from '@/lib/cn'
-
-import { SIGN_CLASS, type Sign } from './semantics'
+import { EMPHASIS_COLOR, type Emphasis } from './semantics'
 
 /** Figure size → type-ramp token. `xl` is the Home hero. */
 const SIZE: Record<'sm' | 'md' | 'lg' | 'xl', string> = {
@@ -18,35 +16,41 @@ interface StatProps {
   unit?: string
   /** Secondary delta line (e.g. "+12,4% vs last month"). */
   delta?: string
-  /** Semantic color of the figure. */
-  sign?: Sign
-  /** Semantic color of the delta (defaults to `sign`). */
-  deltaSign?: Sign
+  /**
+   * `neutral` (default) → white/black; `hero` → the active tone (use sparingly,
+   * e.g. "Left this month"); `danger` → red (genuine warnings only).
+   */
+  emphasis?: Emphasis
   size?: keyof typeof SIZE
   className?: string
 }
 
-/** The atomic number block: mono figure + optional unit/delta, semantic color. */
+/** The atomic number block: mono figure + optional unit/delta. */
 export function Stat({
   label,
   value,
   unit,
   delta,
-  sign = 'neutral',
-  deltaSign,
+  emphasis = 'neutral',
   size = 'md',
   className,
 }: StatProps) {
+  const deltaColor =
+    emphasis === 'danger' ? 'var(--color-neg)' : 'var(--color-text-secondary)'
   return (
     <div className={className}>
       {label && <div className="label mb-1">{label}</div>}
       <div className="flex items-baseline gap-2">
-        <span className={cn('stat-figure', SIGN_CLASS[sign])} style={{ fontSize: SIZE[size] }}>
+        <span className="stat-figure" style={{ fontSize: SIZE[size], color: EMPHASIS_COLOR[emphasis] }}>
           {value}
         </span>
         {unit && <span className="label">{unit}</span>}
       </div>
-      {delta && <div className={cn('tabnum mt-1 text-sm', SIGN_CLASS[deltaSign ?? sign])}>{delta}</div>}
+      {delta && (
+        <div className="tabnum mt-1 text-sm" style={{ color: deltaColor }}>
+          {delta}
+        </div>
+      )}
     </div>
   )
 }

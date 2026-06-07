@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { STATE_COLOR, type HudState } from './semantics'
+import { FILL_COLOR, type FillState } from './semantics'
 
 interface GaugeProps {
   value: number
@@ -8,7 +8,8 @@ interface GaugeProps {
   max?: number
   /** Number of ticks (default from the design tokens: 20). */
   segments?: number
-  state?: HudState
+  /** `default` = white ticks; `danger` = red (genuine warning only). */
+  state?: FillState
   label?: string
   caption?: ReactNode
   className?: string
@@ -22,14 +23,14 @@ export function Gauge({
   value,
   max = 1,
   segments = 20,
-  state = 'accent',
+  state = 'default',
   label,
   caption,
   className,
 }: GaugeProps) {
   const ratio = max <= 0 ? 0 : Math.min(1, Math.max(0, value / max))
   const filled = Math.round(ratio * segments)
-  const color = STATE_COLOR[state]
+  const color = FILL_COLOR[state]
 
   return (
     <div className={className}>

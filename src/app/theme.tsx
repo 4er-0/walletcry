@@ -43,7 +43,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     }
     // Keep the browser UI chrome in sync with the surface color.
     const meta = document.querySelector('meta[name="theme-color"]')
-    if (meta) meta.setAttribute('content', theme === 'dark' ? '#0A0B0D' : '#F4F4F2')
+    if (meta) meta.setAttribute('content', theme === 'dark' ? '#000000' : '#FFFFFF')
   }, [theme, tone])
 
   const setTheme = useCallback((t: Theme) => setThemeState(t), [])

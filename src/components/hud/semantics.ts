@@ -1,29 +1,25 @@
-/** Shared semantic color mapping for HUD components (token-driven). */
+/**
+ * Color model (deliberately spare):
+ *   - Bars & gauges are MONOCHROME — white fill on a dark track (inverts on
+ *     light). Red appears only for a genuine danger state.
+ *   - Figures are neutral (white/black) by default. Only the HERO figure takes
+ *     the active tone color; only genuine warnings go red.
+ * Everything else relies on sign + label + mono, never hue.
+ */
 
-/** Money/health semantics. `accent` follows the active tone; rest are fixed. */
-export type HudState = 'pos' | 'neg' | 'accent' | 'warn' | 'neutral'
+/** Fill color for bars/gauges. */
+export type FillState = 'default' | 'danger'
 
-/** CSS color for filled/strong surfaces (gauges, bars). */
-export const STATE_COLOR: Record<HudState, string> = {
-  pos: 'var(--color-pos-strong)',
-  neg: 'var(--color-neg-strong)',
-  accent: 'var(--tone-accent)',
-  warn: 'var(--color-status-warning)',
-  neutral: 'var(--color-text-secondary)',
+export const FILL_COLOR: Record<FillState, string> = {
+  default: 'var(--color-bar-fill)',
+  danger: 'var(--color-neg)',
 }
 
-/** Sign of a figure → the matching text utility class. */
-export type Sign = 'pos' | 'neg' | 'neutral'
+/** Emphasis for a number block. */
+export type Emphasis = 'neutral' | 'hero' | 'danger'
 
-export const SIGN_CLASS: Record<Sign, string> = {
-  pos: 'text-pos',
-  neg: 'text-neg',
-  neutral: '',
-}
-
-/** Derive a sign from a number (0 counts as neutral). */
-export function signOf(n: number): Sign {
-  if (n > 0) return 'pos'
-  if (n < 0) return 'neg'
-  return 'neutral'
+export const EMPHASIS_COLOR: Record<Emphasis, string> = {
+  neutral: 'var(--color-text-primary)',
+  hero: 'var(--tone-accent)', // the one place tone colors a figure
+  danger: 'var(--color-neg)',
 }

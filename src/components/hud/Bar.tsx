@@ -1,11 +1,12 @@
 import type { ReactNode } from 'react'
 
-import { STATE_COLOR, type HudState } from './semantics'
+import { FILL_COLOR, type FillState } from './semantics'
 
 interface BarProps {
   value: number
   max?: number
-  state?: HudState
+  /** `default` = white fill; `danger` = red (genuine warning only). */
+  state?: FillState
   label?: string
   /** Show the percentage on the right of the label row. */
   showPercent?: boolean
@@ -21,7 +22,7 @@ interface BarProps {
 export function Bar({
   value,
   max = 1,
-  state = 'pos',
+  state = 'default',
   label,
   showPercent,
   caption,
@@ -54,7 +55,7 @@ export function Bar({
           style={{
             height: '100%',
             width: `${pct}%`,
-            background: STATE_COLOR[state],
+            background: FILL_COLOR[state],
             transition: 'width var(--duration-normal) var(--easing-out)',
           }}
         />
