@@ -69,11 +69,22 @@
   --max-width-wide:    1100px;
   --max-width-page:    1440px;
 
-  /* Squared HUD corners — rounding is minimal and rare */
-  --radius-sm:   0;
-  --radius-md:   2px;
-  --radius-lg:   4px;
-  --radius-full: 9999px; /* avatars / status dots only */
+  /* ------------------------------------------------------- CORNER LANGUAGE
+     Rule: CONTAINERS round, DATA stays sharp (bold 90°).
+       chrome  (panels, cards, buttons, chips, inputs, modals) → rounded ramp below
+       data    (tables, ledger rows, numeric readouts, HUD grid) → --radius-data (hard)
+       bracket/notch accents stay 90° on purpose — the rounded chassis carries the
+       tactical tension against sharp corner marks.
+     Applied lazily: new/touched surfaces reach for the semantic tokens. */
+  --radius-sm:   6px;     /* controls: buttons, chips, inputs */
+  --radius-md:   10px;    /* containers: panels, cards */
+  --radius-lg:   14px;    /* large surfaces: modals, sheets */
+  --radius-full: 9999px;  /* avatars / status dots only */
+
+  /* semantic aliases — prefer these in new components */
+  --radius-control:   var(--radius-sm);
+  --radius-container: var(--radius-md);
+  --radius-data:      0;  /* never round data; keep ledger/grid edges hard */
 
   /* Shadows are intentionally near-absent; borders carry hierarchy. */
   --shadow-sm:      none;

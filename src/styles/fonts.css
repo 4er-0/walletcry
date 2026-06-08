@@ -1,0 +1,112 @@
+/* =============================================================================
+   WalletCry display faces — self-hosted dot-matrix / LCD title fonts.
+
+   These drive ONLY the big section titles (`.hud-title` → --font-family-title).
+   Hero money figures stay on mono (`.stat-figure` → --font-family-display).
+
+   The active face is chosen by the [data-display-font] attribute on <html>
+   (mirrors the data-theme / data-tone switching). Default = "dotrice"
+   (SIL OFL, free to ship). Files live in /public/fonts and are served at /fonts.
+   ============================================================================= */
+
+/* ---- Dotrice — dot-matrix, SIL OFL (default) ---- */
+@font-face {
+  font-family: 'Dotrice';
+  src: url('/fonts/dotrice/Dotrice-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Dotrice';
+  src: url('/fonts/dotrice/Dotrice-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* ---- Technology — angular LCD ---- */
+@font-face {
+  font-family: 'Technology';
+  src: url('/fonts/technology/Technology.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Technology';
+  src: url('/fonts/technology/Technology-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* ---- Digital Dream — 7-segment LCD ---- */
+@font-face {
+  font-family: 'DigitalDream';
+  src: url('/fonts/digital-dream/DIGITALDREAM.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'DigitalDream';
+  src: url('/fonts/digital-dream/DIGITALDREAMFAT.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* ---- Alvera (DEMO) — square dots. NOTE: demo/paid license, prototype only ---- */
+@font-face {
+  font-family: 'AlveraSquare';
+  src: url('/fonts/alvera/AlveraDEMO-RegularSquare.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'AlveraSquare';
+  src: url('/fonts/alvera/AlveraDEMO-BoldSquare.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* ---- Alvera (DEMO) — round dots. NOTE: demo/paid license, prototype only ---- */
+@font-face {
+  font-family: 'AlveraCircle';
+  src: url('/fonts/alvera/AlveraDEMO-RegularCircle.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'AlveraCircle';
+  src: url('/fonts/alvera/AlveraDEMO-BoldCircle.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* ---- Title face selection ----------------------------------------------------
+   --font-family-title is what `.hud-title` consumes. Default + per-face overrides
+   keyed off the <html data-display-font> attribute. Every face falls back to mono
+   so a slow/blocked font never leaves a title unstyled. */
+:root {
+  --font-family-title: 'Dotrice', var(--font-family-mono);
+}
+[data-display-font='dotrice'] {
+  --font-family-title: 'Dotrice', var(--font-family-mono);
+}
+[data-display-font='technology'] {
+  --font-family-title: 'Technology', var(--font-family-mono);
+}
+[data-display-font='digitaldream'] {
+  --font-family-title: 'DigitalDream', var(--font-family-mono);
+}
+[data-display-font='alvera-square'] {
+  --font-family-title: 'AlveraSquare', var(--font-family-mono);
+}
+[data-display-font='alvera-circle'] {
+  --font-family-title: 'AlveraCircle', var(--font-family-mono);
+}
+[data-display-font='mono'] {
+  --font-family-title: var(--font-family-mono);
+}
+
+/* Per-face title weight: Dotrice-Bold is over-wide/stretched, so its titles read
+   better at regular weight. Other faces keep the default bold from `.hud-title`. */
+[data-display-font='dotrice'] .hud-title {
+  font-weight: var(--font-weight-normal);
+}
