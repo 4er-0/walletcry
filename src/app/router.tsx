@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { AppShell } from '@/components/shell/AppShell'
 import { PlaceholderScreen } from '@/components/PlaceholderScreen'
+import { DevPage } from '@/routes/DevPage'
 import { HomePage } from '@/routes/HomePage'
 import { KitPage } from '@/routes/KitPage'
 
@@ -26,6 +27,7 @@ export const router = createBrowserRouter([
       { path: 'settings/:area', element: <PlaceholderScreen name="SETTINGS_AREA" route="/settings/:area" /> },
       { path: 'onboarding', element: <PlaceholderScreen name="ONBOARDING" route="/onboarding" /> },
       { path: 'kit', element: <KitPage /> }, // dev: HUD component-kit gallery
+      { path: 'dev', element: <DevPage /> }, // dev: primitive tuning playground
       { path: 'share-target', element: <Navigate to="/wishlist/new" replace /> },
       { path: '*', element: <PlaceholderScreen name="404_NOT_FOUND" route="*" /> },
     ],
