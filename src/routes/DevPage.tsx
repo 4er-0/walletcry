@@ -1,4 +1,4 @@
-import { useState, type CSSProperties, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 
 import { Panel } from '@/components/hud'
 import { cn } from '@/lib/cn'
@@ -95,19 +95,45 @@ function GlyphPicker({
   )
 }
 
+/** Copy text, falling back to execCommand — the async Clipboard API is often
+ *  blocked by the preview iframe's permissions policy, so we need both paths. */
+function copyToClipboard(text: string): Promise<boolean> {
+  const fallback = () => {
+    try {
+      const ta = document.createElement('textarea')
+      ta.value = text
+      ta.setAttribute('readonly', '')
+      ta.style.position = 'fixed'
+      ta.style.left = '-9999px'
+      document.body.appendChild(ta)
+      ta.select()
+      const ok = document.execCommand('copy')
+      document.body.removeChild(ta)
+      return ok
+    } catch {
+      return false
+    }
+  }
+  if (navigator.clipboard?.writeText) {
+    return navigator.clipboard.writeText(text).then(
+      () => true,
+      () => fallback(),
+    )
+  }
+  return Promise.resolve(fallback())
+}
+
 function CopyButton({ text, full }: { text: string; full?: boolean }) {
   const [copied, setCopied] = useState(false)
   return (
     <button
       className={cn('hud-btn', full && 'w-full', copied && 'hud-btn--primary')}
       onClick={() =>
-        navigator.clipboard?.writeText(text).then(
-          () => {
-            setCopied(true)
-            setTimeout(() => setCopied(false), 1200)
-          },
-          () => undefined,
-        )
+        copyToClipboard(text).then((ok) => {
+          if (!ok) return
+          setCopied(true)
+          setTimeout(() => setCopied(false), 1200)
+        })
       }
     >
       {copied ? 'COPIED ✓' : 'COPY_CONFIG'}
@@ -130,13 +156,33 @@ function Tweakable({
 }) {
   const [open, setOpen] = useState(false)
   const [pos, setPos] = useState({ x: 0, y: 0 })
+  const popRef = useRef<HTMLDivElement>(null)
+
+  // Close on outside click / Escape. No full-screen backdrop (those stack and
+  // swallow clicks, locking the page); a document listener is enough.
+  useEffect(() => {
+    if (!open) return
+    const onDown = (e: MouseEvent) => {
+      if (popRef.current && !popRef.current.contains(e.target as Node)) setOpen(false)
+    }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    document.addEventListener('mousedown', onDown)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('mousedown', onDown)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [open])
+
   return (
     <div
       className="inline-flex flex-col items-center"
       onContextMenu={(e) => {
         e.preventDefault()
         setPos({ x: e.clientX, y: e.clientY })
-        setOpen((o) => !o)
+        setOpen(true)
       }}
     >
       <div
@@ -146,38 +192,28 @@ function Tweakable({
         {children}
       </div>
       {open && (
-        <>
-          {/* click-away backdrop */}
-          <div
-            className="fixed inset-0 z-40"
-            onClick={() => setOpen(false)}
-            onContextMenu={(e) => {
-              e.preventDefault()
-              setOpen(false)
-            }}
-          />
-          <div
-            className="fixed z-50 w-[268px] rounded-[var(--radius-container)] border border-[var(--color-border-primary)] bg-[var(--color-bg-secondary)] p-3 text-left"
-            style={{
-              left: Math.max(8, Math.min(pos.x, window.innerWidth - 284)),
-              top: Math.max(8, Math.min(pos.y, window.innerHeight - 340)),
-              boxShadow: 'var(--shadow-overlay)',
-            }}
-            onContextMenu={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-            }}
-          >
-            <div className="mb-3 flex items-center justify-between">
-              <span className="label text-[var(--color-text-primary)]">{title}</span>
-              <button className="hud-btn px-2" onClick={() => setOpen(false)}>
-                ×
-              </button>
-            </div>
-            {controls && <div className="mb-3 flex flex-col gap-2">{controls}</div>}
-            <CopyButton text={config} full />
+        <div
+          ref={popRef}
+          className="fixed z-50 w-[268px] rounded-[var(--radius-container)] border border-[var(--color-border-primary)] bg-[var(--color-bg-secondary)] p-3 text-left"
+          style={{
+            left: Math.max(8, Math.min(pos.x, window.innerWidth - 284)),
+            top: Math.max(8, Math.min(pos.y, window.innerHeight - 340)),
+            boxShadow: 'var(--shadow-overlay)',
+          }}
+          onContextMenu={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+          }}
+        >
+          <div className="mb-3 flex items-center justify-between">
+            <span className="label text-[var(--color-text-primary)]">{title}</span>
+            <button className="hud-btn px-2" onClick={() => setOpen(false)}>
+              ×
+            </button>
           </div>
-        </>
+          {controls && <div className="mb-3 flex flex-col gap-2">{controls}</div>}
+          <CopyButton text={config} full />
+        </div>
       )}
     </div>
   )
@@ -510,11 +546,16 @@ function IxDemo({ label, cls, recipe }: { label: string; cls: string; recipe: st
 function GlowDemo() {
   const [dur, setDur] = useState(140)
   const [strength, setStrength] = useState(14)
+  const [bright, setBright] = useState(100)
+  const [ring, setRing] = useState(true)
   const blur = strength
   const spread = Math.round((-6 + strength * 0.2) * 10) / 10
+  // dim the glow colour toward black so it can be a faint grey, not bright white
+  const glowColor = `color-mix(in srgb, var(--tone-accent) ${bright}%, black)`
   const config =
-    `INTERACTION GLOW\n:hover → accent ring + glow\n` +
-    `strength: ${strength} (blur ${blur}px / spread ${spread}px)\ntransition: ${dur}ms`
+    `INTERACTION GLOW\n:hover → ${ring ? 'ring + ' : ''}glow\n` +
+    `strength: ${strength} (blur ${blur}px / spread ${spread}px)\n` +
+    `brightness: ${bright}%\nring: ${ring ? 'on' : 'off'}\ntransition: ${dur}ms`
   return (
     <Tweakable
       title="GLOW"
@@ -522,7 +563,9 @@ function GlowDemo() {
       controls={
         <>
           <Slider label="strength" value={strength} min={2} max={40} suffix="px" onChange={setStrength} />
+          <Slider label="brightness" value={bright} min={10} max={100} suffix="%" onChange={setBright} />
           <Slider label="transition" value={dur} min={60} max={400} step={10} suffix="ms" onChange={setDur} />
+          <Toggle label="ring" on={ring} onToggle={() => setRing((v) => !v)} />
         </>
       }
     >
@@ -533,10 +576,85 @@ function GlowDemo() {
             transitionDuration: `${dur}ms`,
             ['--glow-blur']: `${blur}px`,
             ['--glow-spread']: `${spread}px`,
+            ['--glow-color']: glowColor,
+            ['--glow-ring']: ring ? '1px' : '0px',
           } as CSSProperties
         }
       >
         GLOW
+      </button>
+    </Tweakable>
+  )
+}
+
+const HL_DIRS = [
+  { id: 'to top', label: 'T' },
+  { id: 'to bottom', label: 'B' },
+  { id: 'to left', label: 'L' },
+  { id: 'to right', label: 'R' },
+  { id: 'radial', label: '◎' },
+] as const
+
+function HighlightDemo() {
+  const [coverage, setCoverage] = useState(50)
+  const [intensity, setIntensity] = useState(35)
+  const [dur, setDur] = useState(140)
+  const [dir, setDir] = useState<(typeof HL_DIRS)[number]['id']>('to top')
+  const [white, setWhite] = useState(false)
+  const [soft, setSoft] = useState(true)
+
+  const colorVal = white ? 'rgba(255,255,255,0.92)' : 'var(--tone-accent)'
+  const stops = soft
+    ? `${colorVal} 0%, transparent ${coverage}%`
+    : `${colorVal} 0%, ${colorVal} ${coverage}%, transparent ${coverage}%`
+  const gradient =
+    dir === 'radial'
+      ? `radial-gradient(circle at center, ${stops})`
+      : `linear-gradient(${dir}, ${stops})`
+
+  const config =
+    `INTERACTION highlight\ndirection: ${dir}\ncoverage: ${coverage}%\n` +
+    `intensity: ${intensity}%\ncolor: ${white ? 'white' : 'accent'}\n` +
+    `edge: ${soft ? 'soft' : 'hard'}\ntransition: ${dur}ms`
+
+  return (
+    <Tweakable
+      title="HIGHLIGHT"
+      config={config}
+      controls={
+        <>
+          <Slider label="coverage" value={coverage} min={10} max={100} suffix="%" onChange={setCoverage} />
+          <Slider label="intensity" value={intensity} min={5} max={100} suffix="%" onChange={setIntensity} />
+          <Slider label="transition" value={dur} min={60} max={400} step={10} suffix="ms" onChange={setDur} />
+          <Toggle label="white" on={white} onToggle={() => setWhite((v) => !v)} />
+          <Toggle label="soft edge" on={soft} onToggle={() => setSoft((v) => !v)} />
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="label w-[96px] shrink-0">direction</span>
+            {HL_DIRS.map((d) => (
+              <button
+                key={d.id}
+                className={`hud-btn px-3${dir === d.id ? ' hud-btn--primary' : ''}`}
+                onClick={() => setDir(d.id)}
+              >
+                {d.label}
+              </button>
+            ))}
+          </div>
+        </>
+      }
+    >
+      <button
+        className="ix ix-highlight"
+        style={
+          {
+            transitionDuration: `${dur}ms`,
+            ['--hl-gradient']: gradient,
+            ['--hl-intensity']: String(intensity / 100),
+            ['--hl-dur']: `${dur}ms`,
+          } as CSSProperties
+        }
+      >
+        <span className="relative z-[1]">HIGHLIGHT</span>
       </button>
     </Tweakable>
   )
@@ -579,6 +697,7 @@ function InteractionsLab() {
           <IxDemo label="ACCENT_BORDER" cls="ix-accent" recipe=":hover → border+color=accent" />
           <IxDemo label="LIFT" cls="ix-lift" recipe=":hover → translateY(-3px) + accent border" />
           <GlowDemo />
+          <HighlightDemo />
           <IxDemo label="FILL_ACCENT" cls="ix-fill" recipe=":hover → bg=accent, color=bg" />
         </div>
 
@@ -631,8 +750,12 @@ export function DevPage() {
         .ix-invert:hover { background: var(--color-text-primary); color: var(--color-bg-primary); border-color: var(--color-text-primary); }
         .ix-accent:hover { border-color: var(--tone-accent); color: var(--tone-accent); }
         .ix-lift:hover { transform: translateY(-3px); border-color: var(--tone-accent); }
-        .ix-glow:hover { box-shadow: 0 0 0 1px var(--tone-accent), 0 0 var(--glow-blur, 14px) var(--glow-spread, -3px) var(--tone-accent); border-color: var(--tone-accent); }
+        .ix-glow:hover { box-shadow: 0 0 0 var(--glow-ring, 1px) var(--glow-color, var(--tone-accent)), 0 0 var(--glow-blur, 14px) var(--glow-spread, -3px) var(--glow-color, var(--tone-accent)); border-color: var(--glow-color, var(--tone-accent)); }
         .ix-fill:hover { background: var(--tone-accent); color: var(--color-bg-primary); border-color: var(--tone-accent); }
+        .ix-highlight { position: relative; overflow: hidden; }
+        .ix-highlight::after { content: ''; position: absolute; inset: 0; background: var(--hl-gradient, none); opacity: 0; transition: opacity var(--hl-dur, 140ms); pointer-events: none; }
+        .ix-highlight:hover { border-color: var(--tone-accent); }
+        .ix-highlight:hover::after { opacity: var(--hl-intensity, .4); }
         .ix-press:active { transform: scale(.93); }
         .ix-press-down:active { transform: translateY(2px); }
         .ix-press-flash:active { background: var(--tone-accent); color: var(--color-bg-primary); border-color: var(--tone-accent); }
