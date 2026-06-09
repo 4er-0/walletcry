@@ -1,6 +1,5 @@
 import { useState } from 'react'
 
-import { DISPLAY_FONTS, useTheme } from '@/app/theme'
 import {
   Bar,
   BarChart,
@@ -83,37 +82,14 @@ const LEDGER_COLUMNS: Array<Column<LedgerRow>> = [
 
 export function KitPage() {
   const [selected, setSelected] = useState('cat_groceries')
-  const { displayFont, setDisplayFont } = useTheme()
 
   return (
     <div className="mx-auto w-full max-w-[var(--max-width-wide)] p-4 md:p-6">
-      <div className="label mb-4">// HUD_COMPONENT_KIT — switch theme/tone in the top bar</div>
+      <div className="label mb-4">
+        // HUD_COMPONENT_KIT — switch theme/tone/font in the settings cog (top bar)
+      </div>
 
-      {/* Display-font switcher: flips the title face live across the whole app.
-          Titles change; the hero money figure stays mono on purpose. */}
-      <Panel label="DISPLAY_FONT // TITLE_FACE">
-        <div className="mb-5 flex flex-wrap items-baseline gap-x-6 gap-y-2">
-          <div className="hud-title text-[2.5rem]">BUDGET</div>
-          <div className="hud-title text-[1.25rem] text-[var(--color-text-secondary)]">
-            RESOURCE_OVERVIEW
-          </div>
-          <Stat label="LEFT_THIS_MONTH" value={formatMoney(1400, 'PLN', { decimals: 0 })} size="lg" />
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {DISPLAY_FONTS.map((f) => (
-            <button
-              key={f.id}
-              className={`hud-btn${displayFont === f.id ? ' hud-btn--primary' : ''}`}
-              onClick={() => setDisplayFont(f.id)}
-            >
-              {f.label}
-              {f.note ? <span className="ml-2 opacity-60">[{f.note}]</span> : null}
-            </button>
-          ))}
-        </div>
-      </Panel>
-
-      <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         {/* Hairline data table — sortable, mono figures, collapses on mobile */}
         <Panel label="HAIRLINE_DATA_TABLE" className="lg:col-span-2">
           <DataTable
