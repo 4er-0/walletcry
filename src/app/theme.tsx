@@ -9,6 +9,8 @@ import {
 
 export type Theme = 'dark' | 'light'
 export type Tone = 'green' | 'amber' | 'cyan' | 'mono'
+/** Dark-mode surface treatment: layered charcoal (default) or pure black. */
+export type Surface = 'charcoal' | 'black'
 export type DisplayFont =
   | 'dotrice'
   | 'technology'
@@ -33,10 +35,12 @@ interface ThemeState {
   theme: Theme
   tone: Tone
   displayFont: DisplayFont
+  surface: Surface
   toggleTheme: () => void
   setTheme: (t: Theme) => void
   setTone: (t: Tone) => void
   setDisplayFont: (f: DisplayFont) => void
+  setSurface: (s: Surface) => void
 }
 
 const ThemeContext = createContext<ThemeState | null>(null)
@@ -53,26 +57,33 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [displayFont, setDisplayFontState] = useState<DisplayFont>(() =>
     readAttr('data-display-font', 'dotrice'),
   )
+  const [surface, setSurfaceState] = useState<Surface>(() =>
+    readAttr('data-surface', 'charcoal'),
+  )
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
     document.documentElement.setAttribute('data-tone', tone)
     document.documentElement.setAttribute('data-display-font', displayFont)
+    document.documentElement.setAttribute('data-surface', surface)
     try {
       localStorage.setItem('wc.theme', theme)
       localStorage.setItem('wc.tone', tone)
       localStorage.setItem('wc.displayFont', displayFont)
+      localStorage.setItem('wc.surface', surface)
     } catch {
       /* storage may be unavailable (private mode) — non-fatal */
     }
-    // Keep the browser UI chrome in sync with the surface color.
+    // Keep the browser UI chrome in sync with the active dark surface / light.
+    const darkChrome = surface === 'black' ? '#000000' : '#181818'
     const meta = document.querySelector('meta[name="theme-color"]')
-    if (meta) meta.setAttribute('content', theme === 'dark' ? '#000000' : '#FFFFFF')
-  }, [theme, tone, displayFont])
+    if (meta) meta.setAttribute('content', theme === 'dark' ? darkChrome : '#FFFFFF')
+  }, [theme, tone, displayFont, surface])
 
   const setTheme = useCallback((t: Theme) => setThemeState(t), [])
   const setTone = useCallback((t: Tone) => setToneState(t), [])
   const setDisplayFont = useCallback((f: DisplayFont) => setDisplayFontState(f), [])
+  const setSurface = useCallback((s: Surface) => setSurfaceState(s), [])
   const toggleTheme = useCallback(
     () => setThemeState((p) => (p === 'dark' ? 'light' : 'dark')),
     [],
@@ -80,7 +91,17 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   return (
     <ThemeContext.Provider
-      value={{ theme, tone, displayFont, toggleTheme, setTheme, setTone, setDisplayFont }}
+      value={{
+        theme,
+        tone,
+        displayFont,
+        surface,
+        toggleTheme,
+        setTheme,
+        setTone,
+        setDisplayFont,
+        setSurface,
+      }}
     >
       {children}
     </ThemeContext.Provider>

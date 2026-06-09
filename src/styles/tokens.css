@@ -195,14 +195,63 @@
   --color-bar-fill:  var(--color-text-primary);
   --color-bar-track: var(--color-bg-tertiary);
 
+  /* ================================================================ SHADCN CONTRACT
+     shadcn/ui's semantic token names, aliased onto OUR themed palette + tone so
+     any shadcn component we drop in inherits the HUD look and follows theme /
+     tone / surface switching for free. Defined once: the aliases point at
+     theme-aware tokens, which resolve lazily per mode at the use site.
+     (Merged from preset b1VlJlUA — see [[walletcry-aesthetic]].) */
+  --background:            var(--color-bg-primary);
+  --foreground:            var(--color-text-primary);
+  --card:                  var(--color-bg-secondary);
+  --card-foreground:       var(--color-text-primary);
+  --popover:               var(--color-bg-secondary);
+  --popover-foreground:    var(--color-text-primary);
+  --primary:               var(--tone-accent);          /* our accent = primary */
+  --primary-foreground:    var(--color-bg-primary);
+  --secondary:             var(--color-bg-tertiary);
+  --secondary-foreground:  var(--color-text-primary);
+  --muted:                 var(--color-bg-tertiary);
+  --muted-foreground:      var(--color-text-secondary);
+  --accent:                var(--color-bg-tertiary);    /* shadcn "accent" = hover surface */
+  --accent-foreground:     var(--color-text-primary);
+  --destructive:           var(--color-neg);
+  --destructive-foreground: var(--color-text-inverse);
+  --border:                var(--color-border-primary);
+  --input:                 var(--color-border-primary);
+  --ring:                  var(--color-border-focus);
+  --radius:                var(--radius-container);
+
+  /* Monochrome data-series ramp (preset's grayscale charts, but mode-aware):
+     5 lightness steps mixed from foreground → background, so they read on dark
+     AND light and stay achromatic. chart-1 = strongest. */
+  --chart-1: var(--color-text-primary);
+  --chart-2: color-mix(in oklab, var(--color-text-primary) 72%, var(--color-bg-primary));
+  --chart-3: color-mix(in oklab, var(--color-text-primary) 56%, var(--color-bg-primary));
+  --chart-4: color-mix(in oklab, var(--color-text-primary) 42%, var(--color-bg-primary));
+  --chart-5: color-mix(in oklab, var(--color-text-primary) 30%, var(--color-bg-primary));
+
+  /* Desktop icon-rail / sidebar slots (shadcn sidebar contract). */
+  --sidebar:                     var(--color-bg-secondary);
+  --sidebar-foreground:          var(--color-text-primary);
+  --sidebar-primary:             var(--tone-accent);
+  --sidebar-primary-foreground:  var(--color-bg-primary);
+  --sidebar-accent:              var(--color-bg-tertiary);
+  --sidebar-accent-foreground:   var(--color-text-primary);
+  --sidebar-border:              var(--color-border-primary);
+  --sidebar-ring:                var(--color-border-focus);
+
   color-scheme: light;
 }
 
 /* ================================================================== DARK PALETTE */
 [data-theme="dark"] {
-  --color-bg-primary:    #000000;  /* pure black — maximum contrast */
-  --color-bg-secondary:  #08090B;  /* HUD panels — barely lifted from black */
-  --color-bg-tertiary:   #15171B;  /* inputs / wells / gauge tracks */
+  /* Default dark surface = CHARCOAL (neutral, layered — merged from the shadcn
+     preset). Switch to pure black via [data-surface="black"] (see override
+     block below). Surface only swaps these bg tokens; everything else holds. */
+  --color-bg-primary:    #181818;  /* charcoal base */
+  --color-bg-secondary:  #222222;  /* panels lift clearly */
+  --color-bg-tertiary:   #2C2C2C;  /* inputs / wells / gauge tracks */
   --color-bg-inverse:    #FFFFFF;
 
   --color-text-primary:   #FFFFFF;  /* full white — data & figures pop */
@@ -241,9 +290,9 @@
 /* System-preference dark, unless the user explicitly chose light */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --color-bg-primary:    #000000;
-    --color-bg-secondary:  #08090B;
-    --color-bg-tertiary:   #15171B;
+    --color-bg-primary:    #181818;  /* charcoal default (matches [data-theme=dark]) */
+    --color-bg-secondary:  #222222;
+    --color-bg-tertiary:   #2C2C2C;
     --color-bg-inverse:    #FFFFFF;
 
     --color-text-primary:   #FFFFFF;
@@ -276,6 +325,18 @@
 
     color-scheme: dark;
   }
+}
+
+/* ============================================================ DARK SURFACE: BLACK
+   Opt back into the original pure-black / barely-lifted treatment. Equal
+   specificity to the auto-dark media rule but declared later, so it wins;
+   higher specificity than the base [data-theme="dark"] block. Toggle by setting
+   <html data-surface="black"> (charcoal is the default = no attribute). */
+[data-theme="dark"][data-surface="black"],
+:root[data-surface="black"]:not([data-theme="light"]) {
+  --color-bg-primary:    #000000;  /* pure black — maximum contrast */
+  --color-bg-secondary:  #08090B;  /* HUD panels — barely lifted from black */
+  --color-bg-tertiary:   #15171B;  /* inputs / wells / gauge tracks */
 }
 
 /* ================================================================== TONE VARIANTS */

@@ -1,7 +1,54 @@
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 
+import { type Surface, type Theme, useTheme } from '@/app/theme'
 import { Panel } from '@/components/hud'
 import { cn } from '@/lib/cn'
+
+/** Compare the two dark-surface treatments live (charcoal vs pure black). */
+function SurfaceLab() {
+  const { theme, setTheme, surface, setSurface } = useTheme()
+  const surfaces: { id: Surface; label: string; note: string }[] = [
+    { id: 'charcoal', label: 'Charcoal', note: 'layered · default' },
+    { id: 'black', label: 'Pure Black', note: 'max contrast' },
+  ]
+  const themes: { id: Theme; label: string }[] = [
+    { id: 'dark', label: 'Dark' },
+    { id: 'light', label: 'Light' },
+  ]
+  return (
+    <Panel label="DARK_SURFACE // CHARCOAL_VS_BLACK" className="mb-4">
+      <div className="mb-3 flex flex-wrap items-center gap-2">
+        <span className="label mr-1">theme:</span>
+        {themes.map((t) => (
+          <button
+            key={t.id}
+            className={`hud-btn px-3${theme === t.id ? ' hud-btn--primary' : ''}`}
+            onClick={() => setTheme(t.id)}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="label mr-1">surface:</span>
+        {surfaces.map((s) => (
+          <button
+            key={s.id}
+            className={`hud-btn${surface === s.id ? ' hud-btn--primary' : ''}`}
+            disabled={theme !== 'dark'}
+            onClick={() => setSurface(s.id)}
+          >
+            {s.label}
+            <span className="ml-2 opacity-60">[{s.note}]</span>
+          </button>
+        ))}
+        {theme !== 'dark' && (
+          <span className="label text-[var(--color-text-tertiary)]">switch to dark to compare</span>
+        )}
+      </div>
+    </Panel>
+  )
+}
 
 /**
  * DEV PLAYGROUND — isolate a primitive and tune it live on the preview.
@@ -769,6 +816,7 @@ export function DevPage() {
       <div className="label mb-5 text-[var(--color-text-secondary)]">
         // isolate + tune primitives live · right-click effects to tweak + copy · /dev
       </div>
+      <SurfaceLab />
       <SegmentedGridLab />
       <LoadingLab />
       <InteractionsLab />
