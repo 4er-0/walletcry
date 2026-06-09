@@ -6,6 +6,8 @@ import {
   BarChart,
   CategoryChip,
   CategoryPicker,
+  type Column,
+  DataTable,
   EmptyState,
   Gauge,
   LineChart,
@@ -14,6 +16,7 @@ import {
   Stat,
   type PickerCategory,
 } from '@/components/hud'
+import { cn } from '@/lib/cn'
 import { formatMoney } from '@/finance'
 
 /**
@@ -29,6 +32,53 @@ const CATEGORIES: PickerCategory[] = [
   { id: 'cat_health', name: 'Health', code: 'HEALTH', icon: 'HeartPulse' },
   { id: 'cat_entertainment', name: 'Entertainment', code: 'ENTERTAINMENT', icon: 'Gamepad2' },
   { id: 'cat_subscriptions', name: 'Subscriptions', code: 'SUBSCRIPTIONS', icon: 'Repeat' },
+]
+
+interface LedgerRow {
+  id: string
+  date: string
+  merchant: string
+  category: string
+  amount: number
+}
+
+const LEDGER: LedgerRow[] = [
+  { id: 't1', date: '2026-06-08', merchant: 'Żabka', category: 'GROCERIES', amount: -23.9 },
+  { id: 't2', date: '2026-06-07', merchant: 'Salary // ACME', category: 'INCOME', amount: 8200 },
+  { id: 't3', date: '2026-06-06', merchant: 'Bolt', category: 'TRANSPORT', amount: -41.5 },
+  { id: 't4', date: '2026-06-05', merchant: 'Biedronka', category: 'GROCERIES', amount: -187.34 },
+  { id: 't5', date: '2026-06-04', merchant: 'Netflix', category: 'SUBSCRIPTIONS', amount: -43 },
+  { id: 't6', date: '2026-06-02', merchant: 'Orlen', category: 'TRANSPORT', amount: -312.07 },
+]
+
+const LEDGER_COLUMNS: Array<Column<LedgerRow>> = [
+  {
+    key: 'date',
+    header: 'DATE',
+    render: (r) => <span className="tabnum">{r.date}</span>,
+    sortable: true,
+    width: '14ch',
+    cellClassName: 'whitespace-nowrap',
+  },
+  { key: 'merchant', header: 'MERCHANT', render: (r) => r.merchant, sortable: true },
+  {
+    key: 'category',
+    header: 'CATEGORY',
+    render: (r) => <span className="label">{r.category}</span>,
+    sortable: true,
+  },
+  {
+    key: 'amount',
+    header: 'AMOUNT',
+    numeric: true,
+    sortable: true,
+    sortAccessor: (r) => r.amount,
+    render: (r) => (
+      <span className={cn('tabnum', r.amount < 0 ? 'text-neg' : 'text-pos')}>
+        {formatMoney(r.amount)}
+      </span>
+    ),
+  },
 ]
 
 export function KitPage() {
@@ -64,6 +114,21 @@ export function KitPage() {
       </Panel>
 
       <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
+        {/* Hairline data table — sortable, mono figures, collapses on mobile */}
+        <Panel label="HAIRLINE_DATA_TABLE" className="lg:col-span-2">
+          <DataTable
+            caption="// RECENT_LEDGER — click a header to sort, resize below 768px to collapse"
+            columns={LEDGER_COLUMNS}
+            rows={LEDGER}
+            getRowKey={(r) => r.id}
+            defaultSort={{ key: 'date', dir: 'desc' }}
+            onRowClick={() => undefined}
+            empty={
+              <EmptyState title="NO_TRANSACTIONS_YET" description="Import a statement to populate the ledger." />
+            }
+          />
+        </Panel>
+
         {/* Stat / number blocks — only the hero takes color; rest stay neutral */}
         <Panel label="STAT_BLOCKS">
           <div className="grid grid-cols-2 gap-5">
