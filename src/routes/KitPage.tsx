@@ -131,7 +131,7 @@ export function KitPage() {
 
         {/* Stat / number blocks — only the hero takes color; rest stay neutral */}
         <Panel label="STAT_BLOCKS">
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 gap-5 min-[420px]:grid-cols-2">
             <Stat
               label="LEFT_THIS_MONTH"
               value={formatMoney(3412.5, 'PLN', { decimals: 0 })}
