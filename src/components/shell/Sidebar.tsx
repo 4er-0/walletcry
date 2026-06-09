@@ -20,7 +20,7 @@ export function Sidebar() {
         className="flex items-center justify-center"
         style={{ height: 'var(--topbar-height)', borderBottom: '1px dashed var(--color-border-primary)' }}
       >
-        <span className="mono text-accent text-base font-bold tracking-tight">W:</span>
+        <span className="mono text-tone text-base font-bold tracking-tight">W:</span>
       </div>
 
       <nav className="flex flex-1 flex-col gap-1 p-2">
@@ -54,7 +54,7 @@ function RailLink({
       className={({ isActive }) =>
         cn(
           'group relative flex flex-col items-center gap-1 rounded-none py-3 transition-colors',
-          isActive ? 'is-active' : 'text-muted hover:text-[var(--color-text-primary)]',
+          isActive ? 'is-active' : 'text-dim hover:text-[var(--color-text-primary)]',
         )
       }
       style={({ isActive }) =>

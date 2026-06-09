@@ -67,7 +67,7 @@ function Tab({
       className={({ isActive }) =>
         cn(
           'flex flex-col items-center justify-center gap-1',
-          isActive ? '' : 'text-muted',
+          isActive ? '' : 'text-dim',
         )
       }
       style={({ isActive }) => (isActive ? { color: 'var(--tone-accent)' } : undefined)}

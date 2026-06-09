@@ -170,12 +170,15 @@
     color: var(--color-text-primary);
   }
 
-  /* ---- Semantic money colors (fixed across tones) ---- */
+  /* ---- Semantic money + text colors (fixed across tones) ----
+     NOTE: avoid the names `text-muted` / `text-accent` — those collide with the
+     shadcn contract's auto-generated Tailwind utilities (--color-muted / --accent
+     are dark SURFACE colors). Ours are named `text-dim` / `text-tone`. */
   .text-pos { color: var(--color-pos); }
   .text-neg { color: var(--color-neg); }
-  .text-muted { color: var(--color-text-secondary); }
+  .text-dim { color: var(--color-text-secondary); }
   .text-faint { color: var(--color-text-tertiary); }
-  .text-accent { color: var(--tone-accent); }
+  .text-tone { color: var(--tone-accent); }
 
   /* ---- Activity log line: > [HH:MM:SS] message ---- */
   .log-line {

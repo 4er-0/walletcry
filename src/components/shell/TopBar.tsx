@@ -1,5 +1,5 @@
 import { Command } from 'lucide-react'
-import { ThemeControls } from './ThemeControls'
+import { SettingsMenu } from './SettingsMenu'
 
 /** Top status bar — wordmark + sync status (left), command hint + theme (right). */
 export function TopBar() {
@@ -15,7 +15,7 @@ export function TopBar() {
     >
       <div className="flex items-center gap-3">
         <span className="mono text-sm font-bold tracking-tight md:hidden">
-          <span className="text-accent">W:</span>
+          <span className="text-tone">W:</span>
           <span style={{ color: 'var(--color-text-primary)' }}>WALLETCRY</span>
         </span>
         <span className="label hidden md:inline">WALLETCRY // v0.0.0</span>
@@ -44,7 +44,7 @@ export function TopBar() {
           <Command size={13} strokeWidth={1.75} />
           <span style={{ fontSize: '11px' }}>K</span>
         </button>
-        <ThemeControls />
+        <SettingsMenu />
       </div>
     </header>
   )
