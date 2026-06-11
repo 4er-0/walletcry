@@ -58,7 +58,16 @@ export function HomePage() {
   if (booting) {
     return (
       <Screen>
-        <div className="label text-faint">// BOOTING_READOUT…</div>
+        <div className="mb-4 flex items-baseline justify-between">
+          <h1 className="label">HOME // DASHBOARD</h1>
+          <span className="label text-faint">// BOOTING_READOUT…</span>
+        </div>
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2" aria-hidden>
+          <SkeletonPanel className="lg:col-span-2" lines={3} />
+          <SkeletonPanel lines={2} />
+          <SkeletonPanel lines={2} />
+          <SkeletonPanel className="lg:col-span-2" lines={4} />
+        </div>
       </Screen>
     )
   }
@@ -300,6 +309,25 @@ function Screen({ children }: { children: React.ReactNode }) {
   return (
     <div className="mx-auto w-full max-w-[var(--max-width-wide)] p-4 md:p-6">
       {children}
+    </div>
+  )
+}
+
+/** Static dashed placeholder panel shown while IndexedDB boots (no motion). */
+function SkeletonPanel({ lines, className }: { lines: number; className?: string }) {
+  return (
+    <div className={cn('hud-panel p-4 md:p-5', className)}>
+      {Array.from({ length: lines }, (_, i) => (
+        <div
+          key={i}
+          className="mb-3 last:mb-0"
+          style={{
+            height: 'var(--space-4)',
+            width: `${85 - i * 18}%`,
+            background: 'var(--gauge-track)',
+          }}
+        />
+      ))}
     </div>
   )
 }
