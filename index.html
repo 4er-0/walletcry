@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-tone="green" data-display-font="dotrice" data-surface="charcoal">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="WalletCry" />
+    <meta name="description" content="ADHD-first personal finance — spending, debts, income, and a when-can-I-afford-it wishlist." />
+    <title>WalletCry</title>
+    <script>
+      // Apply stored theme/tone before paint to avoid a flash.
+      try {
+        var t = localStorage.getItem('wc.theme');
+        var n = localStorage.getItem('wc.tone');
+        var d = localStorage.getItem('wc.displayFont');
+        var s = localStorage.getItem('wc.surface');
+        var el = document.documentElement;
+        if (t) el.setAttribute('data-theme', t);
+        if (n) el.setAttribute('data-tone', n);
+        if (d) el.setAttribute('data-display-font', d);
+        if (s) el.setAttribute('data-surface', s);
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

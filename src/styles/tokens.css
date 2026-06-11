@@ -1,0 +1,398 @@
+/* =============================================================================
+   WalletCry — Design Tokens
+   Philosophy: "Terminal Ledger / Tactical HUD" (see DESIGN_BRIEF.md)
+   -----------------------------------------------------------------------------
+   - Mostly black & white. Color is SEMANTIC, not decorative:
+       green = profit/positive, red = debt/negative, white/grey = neutral data.
+   - Borders do the layout work (dashed/dotted HUD rules + bracket corners),
+     not shadows. Corners are squared, not rounded.
+   - Monospace for ALL data; clean sans for prose.
+   - Theme axes:  data-theme = dark (default) | light
+                  data-tone  = green (default) | amber | cyan | mono
+     `data-theme` flips the surface palette; `data-tone` re-hues only the
+     INTERACTIVE accent (focus, active nav, command caret). The money
+     semantics (--color-pos / --color-neg) stay fixed across tones.
+   - Fonts: JetBrains Mono (data/display) + Inter (prose). Self-host for PWA.
+     Swap by editing --font-family-mono / --font-family-body only.
+
+   Default applied theme is DARK (app sets <html data-theme="dark">), but light
+   is a first-class peer and system preference is respected when no explicit
+   choice is stored.
+   ============================================================================= */
+
+:root {
+  /* ---------------------------------------------------------------- TYPOGRAPHY */
+  --font-family-mono:    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-family-body:    "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-family-display: var(--font-family-mono); /* big hero numbers are mono */
+
+  /* Small steps stay fixed for legibility; large steps are FLUID — they scale
+     with the viewport via clamp(min, base+vw, max) so big mono figures shrink
+     on narrow screens instead of overflowing their panel. */
+  --font-size-xs:   0.6875rem;  /* 11px — micro mono labels (// LAST_14_DAYS) */
+  --font-size-sm:   0.75rem;    /* 12px — table labels, captions */
+  --font-size-base: 0.875rem;   /* 14px — default UI text */
+  --font-size-md:   1rem;       /* 16px — emphasized body / inputs (≥16px avoids iOS zoom) */
+  --font-size-lg:   clamp(1.125rem, 1.02rem + 0.5vw, 1.25rem);   /* 18→20 — sub-headers */
+  --font-size-xl:   clamp(1.25rem, 1.07rem + 0.9vw, 1.5rem);     /* 20→24 — section figures */
+  --font-size-2xl:  clamp(1.5rem, 1.18rem + 1.6vw, 2rem);        /* 24→32 — secondary hero numbers */
+  --font-size-3xl:  clamp(1.75rem, 1.27rem + 2.4vw, 2.5rem);     /* 28→40 — the Home "Left this month" hero */
+  --font-size-4xl:  clamp(2.125rem, 1.5rem + 3.1vw, 3.25rem);    /* 34→52 — reserved, used sparingly */
+
+  --font-weight-normal:   400;
+  --font-weight-medium:   500;
+  --font-weight-semibold: 600;
+  --font-weight-bold:     700;
+
+  --line-height-tight:   1.2;   /* headings & big numbers */
+  --line-height-normal:  1.5;   /* body */
+  --line-height-relaxed: 1.7;   /* long prose */
+
+  --letter-spacing-tight:  -0.01em;
+  --letter-spacing-normal:  0;
+  --letter-spacing-wide:    0.08em; /* UPPERCASE mono labels — the HUD label look */
+
+  /* ---------------------------------------------------------------- SPACING (4px base) */
+  --space-0:  0;
+  --space-1:  2px;
+  --space-2:  4px;
+  --space-3:  8px;
+  --space-4:  12px;
+  --space-5:  16px;
+  --space-6:  20px;
+  --space-7:  24px;
+  --space-8:  32px;
+  --space-9:  48px;
+  --space-10: 64px;
+  --space-11: 96px;
+  --space-12: 128px;
+
+  /* ---------------------------------------------------------------- LAYOUT */
+  --max-width-content: 68ch;
+  --max-width-wide:    1100px;
+  --max-width-page:    1440px;
+
+  /* ------------------------------------------------------- CORNER LANGUAGE
+     Rule: CONTAINERS round, DATA stays sharp (bold 90°).
+       chrome  (panels, cards, buttons, chips, inputs, modals) → rounded ramp below
+       data    (tables, ledger rows, numeric readouts, HUD grid) → --radius-data (hard)
+       bracket/notch accents stay 90° on purpose — the rounded chassis carries the
+       tactical tension against sharp corner marks.
+     Applied lazily: new/touched surfaces reach for the semantic tokens. */
+  --radius-sm:   6px;     /* controls: buttons, chips, inputs */
+  --radius-md:   10px;    /* containers: panels, cards */
+  --radius-lg:   14px;    /* large surfaces: modals, sheets */
+  --radius-full: 9999px;  /* avatars / status dots only */
+
+  /* semantic aliases — prefer these in new components */
+  --radius-control:   var(--radius-sm);
+  --radius-container: var(--radius-md);
+  --radius-data:      0;  /* never round data; keep ledger/grid edges hard */
+
+  /* Shadows are intentionally near-absent; borders carry hierarchy. */
+  --shadow-sm:      none;
+  --shadow-md:      none;
+  --shadow-lg:      none;
+  --shadow-overlay: 0 8px 40px rgba(0, 0, 0, 0.45); /* modals/popovers only */
+  --shadow-focus:   0 0 0 2px var(--color-bg-primary), 0 0 0 4px var(--color-border-focus);
+
+  /* ---------------------------------------------------------------- HUD PRIMITIVES */
+  --hud-border-width:   1px;
+  --hud-border-style:   dashed;                    /* dashed/dotted CLI-style rules */
+  --hud-border-color:   var(--color-border-primary);
+  --hud-rule-style:     dotted;                    /* for thin in-panel dividers */
+  --hud-bracket-size:   10px;                      /* corner-frame leg length */
+  --hud-bracket-width:  1px;
+  --hud-bracket-color:  var(--color-border-focus); /* picks up the active tone */
+
+  --gauge-segments:     20;     /* segmented/ticked gauge count */
+  --gauge-segment-gap:  2px;
+  --gauge-height:       8px;
+  --gauge-track:        var(--color-bg-tertiary);
+
+  --label-transform:    uppercase;
+  --label-spacing:      var(--letter-spacing-wide);
+
+  /* ---------------------------------------------------------------- MOTION */
+  --duration-instant: 50ms;
+  --duration-fast:    150ms;
+  --duration-normal:  250ms;
+  --duration-slow:    400ms;
+  --duration-slower:  600ms;
+  --duration-tick:    90ms;   /* number-ticking / digit roll */
+
+  --easing-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --easing-in:      cubic-bezier(0.4, 0, 1, 1);
+  --easing-out:     cubic-bezier(0, 0, 0.2, 1);
+  --easing-tick:    cubic-bezier(0.2, 0, 0, 1); /* mechanical, instrument-like */
+  /* No bounce/elastic easing — the aesthetic is precise, not playful. */
+
+  /* ---------------------------------------------------------------- BREAKPOINTS (reference) */
+  --breakpoint-sm:  375px;
+  --breakpoint-md:  768px;
+  --breakpoint-lg:  1024px;
+  --breakpoint-xl:  1280px;
+  --breakpoint-2xl: 1536px;
+
+  /* ---------------------------------------------------------------- DEVICE / SHELL */
+  --safe-top:    env(safe-area-inset-top, 0px);
+  --safe-right:  env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left:   env(safe-area-inset-left, 0px);
+
+  --touch-target-min: 44px;          /* iOS/Android min tap target */
+  --tab-bar-height:   56px;          /* mobile bottom tab bar */
+  --sidebar-width:    64px;          /* desktop icon rail (collapsed) */
+  --sidebar-width-expanded: 220px;   /* desktop rail (labels shown) */
+  --topbar-height:    52px;
+
+  /* ================================================================ TONE (accent) */
+  /* Default tone = green. Money colors below are FIXED and do not change. */
+  --tone-accent:        #2FE36B;
+  --tone-accent-hover:  #46EA80;
+  --tone-accent-active: #20C95A;
+  --tone-accent-muted:  rgba(47, 227, 107, 0.14); /* subtle fills/highlights */
+
+  /* ================================================================ LIGHT PALETTE (:root default) */
+  --color-bg-primary:    #FFFFFF;  /* pure white paper — inverse of dark */
+  --color-bg-secondary:  #FFFFFF;  /* panels */
+  --color-bg-tertiary:   #ECECEA;  /* inputs / wells / gauge tracks */
+  --color-bg-inverse:    #000000;
+
+  --color-text-primary:   #000000;  /* full black — max contrast on white */
+  --color-text-secondary: #4A4E55;
+  --color-text-tertiary:  #80858D; /* placeholder / disabled */
+  --color-text-inverse:   #FFFFFF;
+  --color-text-link:      var(--tone-accent-active);
+
+  --color-border-primary:   #AFB1B7;  /* darker hairline for contrast */
+  --color-border-secondary: #DDDDDB;
+  --color-border-focus:     var(--tone-accent-active);
+
+  --color-accent-primary:        var(--tone-accent-active);
+  --color-accent-primary-hover:  var(--tone-accent);
+  --color-accent-primary-active: #0E8F4F;
+  --color-accent-secondary:      var(--color-text-primary);
+
+  /* Money semantics (fixed across tones) — AA-contrast variants for light */
+  --color-pos:        #0E8F4F;  /* profit text on light */
+  --color-pos-strong: #10A45A;  /* bold fills / bars */
+  --color-pos-muted:  rgba(14, 143, 79, 0.12);
+  --color-neg:        #CE2C31;  /* debt text on light */
+  --color-neg-strong: #E5484D;
+  --color-neg-muted:  rgba(206, 44, 49, 0.12);
+
+  --color-status-success: var(--color-pos);
+  --color-status-error:   var(--color-neg);
+  --color-status-warning: #B7791F;
+  --color-status-info:    #2D6FE0;
+
+  --color-surface-overlay: rgba(10, 11, 13, 0.45);
+
+  /* Bars & gauges are MONOCHROME: ink fill on a muted track. Because the fill
+     is the primary text color, it auto-inverts (white on dark, black on light).
+     Color stays reserved for the hero figure (tone) and genuine warnings (red). */
+  --color-bar-fill:  var(--color-text-primary);
+  --color-bar-track: var(--color-bg-tertiary);
+
+  /* ================================================================ SHADCN CONTRACT
+     shadcn/ui's semantic token names, aliased onto OUR themed palette + tone so
+     any shadcn component we drop in inherits the HUD look and follows theme /
+     tone / surface switching for free. Defined once: the aliases point at
+     theme-aware tokens, which resolve lazily per mode at the use site.
+     (Merged from preset b1VlJlUA — see [[walletcry-aesthetic]].) */
+  --background:            var(--color-bg-primary);
+  --foreground:            var(--color-text-primary);
+  --card:                  var(--color-bg-secondary);
+  --card-foreground:       var(--color-text-primary);
+  --popover:               var(--color-bg-secondary);
+  --popover-foreground:    var(--color-text-primary);
+  --primary:               var(--tone-accent);          /* our accent = primary */
+  --primary-foreground:    var(--color-bg-primary);
+  --secondary:             var(--color-bg-tertiary);
+  --secondary-foreground:  var(--color-text-primary);
+  --muted:                 var(--color-bg-tertiary);
+  --muted-foreground:      var(--color-text-secondary);
+  --accent:                var(--color-bg-tertiary);    /* shadcn "accent" = hover surface */
+  --accent-foreground:     var(--color-text-primary);
+  --destructive:           var(--color-neg);
+  --destructive-foreground: var(--color-text-inverse);
+  --border:                var(--color-border-primary);
+  --input:                 var(--color-border-primary);
+  --ring:                  var(--color-border-focus);
+  --radius:                var(--radius-container);
+
+  /* Monochrome data-series ramp (preset's grayscale charts, but mode-aware):
+     5 lightness steps mixed from foreground → background, so they read on dark
+     AND light and stay achromatic. chart-1 = strongest. */
+  --chart-1: var(--color-text-primary);
+  --chart-2: color-mix(in oklab, var(--color-text-primary) 72%, var(--color-bg-primary));
+  --chart-3: color-mix(in oklab, var(--color-text-primary) 56%, var(--color-bg-primary));
+  --chart-4: color-mix(in oklab, var(--color-text-primary) 42%, var(--color-bg-primary));
+  --chart-5: color-mix(in oklab, var(--color-text-primary) 30%, var(--color-bg-primary));
+
+  /* Desktop icon-rail / sidebar slots (shadcn sidebar contract). */
+  --sidebar:                     var(--color-bg-secondary);
+  --sidebar-foreground:          var(--color-text-primary);
+  --sidebar-primary:             var(--tone-accent);
+  --sidebar-primary-foreground:  var(--color-bg-primary);
+  --sidebar-accent:              var(--color-bg-tertiary);
+  --sidebar-accent-foreground:   var(--color-text-primary);
+  --sidebar-border:              var(--color-border-primary);
+  --sidebar-ring:                var(--color-border-focus);
+
+  color-scheme: light;
+}
+
+/* ================================================================== DARK PALETTE */
+[data-theme="dark"] {
+  /* Default dark surface = CHARCOAL (neutral, layered — merged from the shadcn
+     preset). Switch to pure black via [data-surface="black"] (see override
+     block below). Surface only swaps these bg tokens; everything else holds. */
+  --color-bg-primary:    #181818;  /* charcoal base */
+  --color-bg-secondary:  #222222;  /* panels lift clearly */
+  --color-bg-tertiary:   #2C2C2C;  /* inputs / wells / gauge tracks */
+  --color-bg-inverse:    #FFFFFF;
+
+  --color-text-primary:   #FFFFFF;  /* full white — data & figures pop */
+  --color-text-secondary: #BCC1C9;  /* brighter so mono labels never get lost */
+  --color-text-tertiary:  #71767F;
+  --color-text-inverse:   #000000;
+  --color-text-link:      var(--tone-accent);
+
+  --color-border-primary:   #474C54;  /* brighter hairline for contrast */
+  --color-border-secondary: #23272E;  /* subtle */
+  --color-border-focus:     var(--tone-accent);
+
+  --color-accent-primary:        var(--tone-accent);
+  --color-accent-primary-hover:  var(--tone-accent-hover);
+  --color-accent-primary-active: var(--tone-accent-active);
+  --color-accent-secondary:      var(--color-text-primary);
+
+  /* Money semantics — neon on near-black */
+  --color-pos:        #2FE36B;
+  --color-pos-strong: #38F07A;
+  --color-pos-muted:  rgba(47, 227, 107, 0.14);
+  --color-neg:        #FF4D52;
+  --color-neg-strong: #FF6469;
+  --color-neg-muted:  rgba(255, 77, 82, 0.14);
+
+  --color-status-success: var(--color-pos);
+  --color-status-error:   var(--color-neg);
+  --color-status-warning: #F5A623;
+  --color-status-info:    #5AB0FF;
+
+  --color-surface-overlay: rgba(0, 0, 0, 0.6);
+
+  color-scheme: dark;
+}
+
+/* System-preference dark, unless the user explicitly chose light */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg-primary:    #181818;  /* charcoal default (matches [data-theme=dark]) */
+    --color-bg-secondary:  #222222;
+    --color-bg-tertiary:   #2C2C2C;
+    --color-bg-inverse:    #FFFFFF;
+
+    --color-text-primary:   #FFFFFF;
+    --color-text-secondary: #BCC1C9;
+    --color-text-tertiary:  #71767F;
+    --color-text-inverse:   #000000;
+    --color-text-link:      var(--tone-accent);
+
+    --color-border-primary:   #474C54;
+    --color-border-secondary: #23272E;
+    --color-border-focus:     var(--tone-accent);
+
+    --color-accent-primary:        var(--tone-accent);
+    --color-accent-primary-hover:  var(--tone-accent-hover);
+    --color-accent-primary-active: var(--tone-accent-active);
+
+    --color-pos:        #2FE36B;
+    --color-pos-strong: #38F07A;
+    --color-pos-muted:  rgba(47, 227, 107, 0.14);
+    --color-neg:        #FF4D52;
+    --color-neg-strong: #FF6469;
+    --color-neg-muted:  rgba(255, 77, 82, 0.14);
+
+    --color-status-success: var(--color-pos);
+    --color-status-error:   var(--color-neg);
+    --color-status-warning: #F5A623;
+    --color-status-info:    #5AB0FF;
+
+    --color-surface-overlay: rgba(0, 0, 0, 0.6);
+
+    color-scheme: dark;
+  }
+}
+
+/* ============================================================ DARK SURFACE: BLACK
+   Opt back into the original pure-black / barely-lifted treatment. Equal
+   specificity to the auto-dark media rule but declared later, so it wins;
+   higher specificity than the base [data-theme="dark"] block. Toggle by setting
+   <html data-surface="black"> (charcoal is the default = no attribute). */
+[data-theme="dark"][data-surface="black"],
+:root[data-surface="black"]:not([data-theme="light"]) {
+  --color-bg-primary:    #000000;  /* pure black — maximum contrast */
+  --color-bg-secondary:  #08090B;  /* HUD panels — barely lifted from black */
+  --color-bg-tertiary:   #15171B;  /* inputs / wells / gauge tracks */
+}
+
+/* ================================================================== TONE VARIANTS */
+/* Re-hue the INTERACTIVE accent only. Money colors (pos/neg) are unchanged. */
+[data-tone="amber"] {
+  --tone-accent:        #F5A623;
+  --tone-accent-hover:  #FFB73E;
+  --tone-accent-active: #D98C12;
+  --tone-accent-muted:  rgba(245, 166, 35, 0.14);
+}
+[data-tone="cyan"] {
+  --tone-accent:        #35D6E0;
+  --tone-accent-hover:  #5BE3EC;
+  --tone-accent-active: #1FB4BD;
+  --tone-accent-muted:  rgba(53, 214, 224, 0.14);
+}
+[data-tone="mono"] {
+  /* Pure black & white: interactive accent becomes the foreground ink. */
+  --tone-accent:        #E8E9EC;
+  --tone-accent-hover:  #FFFFFF;
+  --tone-accent-active: #C2C4C9;
+  --tone-accent-muted:  rgba(232, 233, 236, 0.12);
+}
+[data-theme="light"][data-tone="mono"],
+:root[data-tone="mono"]:not([data-theme="dark"]) {
+  --tone-accent:        #0E0F12;
+  --tone-accent-hover:  #000000;
+  --tone-accent-active: #2A2C30;
+  --tone-accent-muted:  rgba(14, 15, 18, 0.08);
+}
+
+/* ================================================================== REDUCED MOTION */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-instant: 0ms;
+    --duration-fast:    0ms;
+    --duration-normal:  0ms;
+    --duration-slow:    0ms;
+    --duration-slower:  0ms;
+    --duration-tick:    0ms;
+  }
+  /* ASCII/number animations fall back to their final static state. */
+}
+
+/* =============================================================================
+   PORTING NOTE (Phase 6):
+   - Drop this file into the app as src/styles/tokens.css and @import first.
+   - Tailwind v4: expose tokens via @theme, e.g.
+       @theme {
+         --color-pos: var(--color-pos);
+         --font-mono: var(--font-family-mono);
+         ...
+       }
+     so utilities like text-pos / font-mono map to these variables.
+   - Self-host JetBrains Mono + Inter (e.g. @fontsource) and subset to the
+     glyphs used (Latin + box-drawing/ASCII) to keep the PWA payload small.
+   - Default the document to dark: <html data-theme="dark" data-tone="green">,
+     overridden by stored user preference; fall back to system when unset.
+   ============================================================================= */

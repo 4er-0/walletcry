@@ -1,0 +1,15 @@
+/** HUD component kit — the shared "Terminal Ledger" vocabulary. */
+
+export { Panel } from './Panel'
+export { Stat } from './Stat'
+export { Gauge } from './Gauge'
+export { Bar } from './Bar'
+export { DataTable, type Column, type SortDir } from './DataTable'
+export { LineChart } from './LineChart'
+export { BarChart } from './BarChart'
+export { CategoryChip } from './CategoryChip'
+export { CategoryPicker, type PickerCategory } from './CategoryPicker'
+export { LogFeed, logTime, type LogEntry } from './LogFeed'
+export { EmptyState } from './EmptyState'
+export { categoryIcon, CATEGORY_ICONS } from './icons'
+export { FILL_COLOR, EMPHASIS_COLOR, type FillState, type Emphasis } from './semantics'
