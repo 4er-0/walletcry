@@ -179,10 +179,26 @@ export function HomePage() {
                   overspent
                     ? 'OVER_BUDGET'
                     : hasIncome
-                      ? `${Math.round(headroom * 100)}% unspent · essentials ${formatMoney(surplus.essentials, 'PLN', { decimals: 0 })} · disc. ${formatMoney(surplus.discretionary, 'PLN', { decimals: 0 })}`
+                      ? `${Math.round(headroom * 100)}% unspent`
                       : 'awaiting income'
                 }
               />
+              {surplus.spent > 0 && (
+                <div className="grid grid-cols-2 gap-4">
+                  <Bar
+                    label="ESSENTIALS"
+                    value={surplus.essentials}
+                    max={surplus.spent}
+                    caption={formatMoney(surplus.essentials, 'PLN', { decimals: 0 })}
+                  />
+                  <Bar
+                    label="DISCRETIONARY"
+                    value={surplus.discretionary}
+                    max={surplus.spent}
+                    caption={formatMoney(surplus.discretionary, 'PLN', { decimals: 0 })}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </Panel>
