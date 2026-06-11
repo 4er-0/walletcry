@@ -72,7 +72,7 @@ Every task is a vertical slice (structure + style + interaction) built on **mock
   updates schedule in real time and the payoff date visibly moves. _Depends on: calc engine, table,
   gauge._
 
-- [ ] **Wishlist**: **Need/Want/Dream** tier groups; item cards with **affordability bar +
+- [x] **Wishlist**: **Need/Want/Dream** tier groups; item cards with **affordability bar +
   "affordable in N months"**; **add-via-link** (paste URL → mock fetch-proxy → pending item →
   assign tier → confirm); detail with the **financing calculator** (save-up vs finance, BNPL,
   impact on other goals). _Done:_ paste-link creates a pending→confirmed item; calculator compares
