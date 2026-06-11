@@ -78,7 +78,7 @@ Every task is a vertical slice (structure + style + interaction) built on **mock
   impact on other goals). _Done:_ paste-link creates a pending→confirmed item; calculator compares
   options correctly. _Depends on: calc engine, kit, data layer. Note: proxy is mocked (per brief)._
 
-- [ ] **Settings**: Income sources (multiple streams, fixed+variable), categories & merchant
+- [x] **Settings**: Income sources (multiple streams, fixed+variable), categories & merchant
   rules, currency & formatting, appearance (theme/tone — reuses shell switcher), and data (CSV
   mappings list, export, **scaffolded sync + bank-link entry points**, disabled/"coming soon").
   _Done:_ editing income/categories updates calculations; scaffold stubs present. _Depends on:
