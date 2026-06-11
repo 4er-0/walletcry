@@ -55,7 +55,7 @@ Every task is a vertical slice (structure + style + interaction) built on **mock
   overdraft/missed-payment need account-balance + due-date data the model doesn't have yet
   (see "Tactical warning/alert states")._
 
-- [ ] **Transactions**: Ledger using the hairline table — filter/search bar (`?q/category/from/to`),
+- [x] **Transactions**: Ledger using the hairline table — filter/search bar (`?q/category/from/to`),
   signed mono amounts, **inline recategorize** with "apply to all matching <merchant>?" rule-
   learning, and a surfaced "recurring bills detected" rail. _Done:_ filter via URL params,
   recategorize persists + learns a rule. _Depends on: table, category chip, data layer._

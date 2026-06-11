@@ -4,6 +4,7 @@ import { PlaceholderScreen } from '@/components/PlaceholderScreen'
 import { DevPage } from '@/routes/DevPage'
 import { HomePage } from '@/routes/HomePage'
 import { KitPage } from '@/routes/KitPage'
+import { TransactionsPage } from '@/routes/TransactionsPage'
 
 /**
  * Route skeleton mirroring INFORMATION_ARCHITECTURE.md. Screens that aren't
@@ -16,7 +17,7 @@ export const router = createBrowserRouter([
     element: <AppShell />,
     children: [
       { index: true, element: <HomePage /> },
-      { path: 'transactions', element: <PlaceholderScreen name="TRANSACTIONS" route="/transactions" /> },
+      { path: 'transactions', element: <TransactionsPage /> },
       { path: 'transactions/import', element: <PlaceholderScreen name="IMPORT" route="/transactions/import" /> },
       { path: 'transactions/:id', element: <PlaceholderScreen name="TRANSACTION_DETAIL" route="/transactions/:id" /> },
       { path: 'debts', element: <PlaceholderScreen name="DEBTS" route="/debts" /> },
