@@ -5,6 +5,7 @@ import { DevPage } from '@/routes/DevPage'
 import { HomePage } from '@/routes/HomePage'
 import { KitPage } from '@/routes/KitPage'
 import { TransactionsPage } from '@/routes/TransactionsPage'
+import { DebtsPage } from '@/routes/DebtsPage'
 
 /**
  * Route skeleton mirroring INFORMATION_ARCHITECTURE.md. Screens that aren't
@@ -20,7 +21,7 @@ export const router = createBrowserRouter([
       { path: 'transactions', element: <TransactionsPage /> },
       { path: 'transactions/import', element: <PlaceholderScreen name="IMPORT" route="/transactions/import" /> },
       { path: 'transactions/:id', element: <PlaceholderScreen name="TRANSACTION_DETAIL" route="/transactions/:id" /> },
-      { path: 'debts', element: <PlaceholderScreen name="DEBTS" route="/debts" /> },
+      { path: 'debts', element: <DebtsPage /> },
       { path: 'debts/:id', element: <PlaceholderScreen name="DEBT_DETAIL" route="/debts/:id" /> },
       { path: 'wishlist', element: <PlaceholderScreen name="WISHLIST" route="/wishlist" /> },
       { path: 'wishlist/:id', element: <PlaceholderScreen name="WISHLIST_ITEM" route="/wishlist/:id" /> },

@@ -31,6 +31,7 @@ import {
   useTransactions,
   useWishlist,
 } from '@/data'
+import { isoMonth } from '@/lib/dates'
 import type { Debt, WishlistItem } from '@/data'
 
 /**
@@ -384,7 +385,3 @@ function hudCode(name: string): string {
     .replace(/^_+|_+$/g, '')
 }
 
-/** Date → `YYYY-MM` (the "free by" payoff month). */
-function isoMonth(d: Date): string {
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
-}
