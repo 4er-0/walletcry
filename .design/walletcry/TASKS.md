@@ -66,7 +66,7 @@ Every task is a vertical slice (structure + style + interaction) built on **mock
   bank CSV imports correctly, re-import dedupes, mapping is reused next time. _Risk (parsing/dedup).
   Depends on: table, calc/categorize, data layer._
 
-- [ ] **Debts**: List + combined position (total owed, aggregate payoff, total interest); detail
+- [x] **Debts**: List + combined position (total owed, aggregate payoff, total interest); detail
   (`/debts/:id`) with **amortization schedule** + **extra-payment slider** that live-recomputes
   payoff date/interest (numbers tick), plus **snowball vs avalanche** compare. _Done:_ slider
   updates schedule in real time and the payoff date visibly moves. _Depends on: calc engine, table,
